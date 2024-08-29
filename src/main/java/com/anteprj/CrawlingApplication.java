@@ -1,4 +1,4 @@
-package com.anteprj.crawling;
+package com.anteprj;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
