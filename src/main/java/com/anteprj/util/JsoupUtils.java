@@ -1,4 +1,4 @@
-package com.anteprj.utile;
+package com.anteprj.util;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

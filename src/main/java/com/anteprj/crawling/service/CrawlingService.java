@@ -3,7 +3,7 @@ package com.anteprj.crawling.service;
 import com.anteprj.crawling.entity.Notice;
 import com.anteprj.crawling.repository.NoticeRepository;
 import com.anteprj.notice.service.NotificationService;
-import com.anteprj.utile.JsoupUtils;
+import com.anteprj.util.JsoupUtils;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
