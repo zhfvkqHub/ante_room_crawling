@@ -91,6 +91,12 @@ dependencies {
     implementation("org.seleniumhq.selenium:selenium-java:4.18.1")
     implementation("org.seleniumhq.selenium:selenium-chrome-driver:4.18.1")
 
+    //querydsl
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+    annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("org.jsoup:jsoup:1.15.3")

@@ -21,6 +21,11 @@
       </tr>
       </tbody>
     </table>
+    <div class="pagination">
+      <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+    </div>
   </div>
 </template>
 
@@ -31,20 +36,36 @@ import {format} from 'date-fns';
 export default {
   data() {
     return {
-      notices: []
+      notices: [],
+      currentPage: 1,
+      totalPages: 1,
+      pageSize: 10
     }
   },
   mounted() {
-    this.fetchNotices()
+    this.fetchNotices();
   },
   methods: {
     async fetchNotices() {
-      const response = await axiosGetNotice();
-      this.notices = response.data;
+      const response = await axiosGetNotice(this.currentPage, this.pageSize);
+      this.notices = response.data.content;
+      this.totalPages = response.data.totalPages;
     },
     isToday(dateString) {
       const today = format(new Date(), 'yyyy-MM-dd');
       return dateString === today;
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.fetchNotices();
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.fetchNotices();
+      }
     }
   }
 }
@@ -110,6 +131,33 @@ export default {
   font-weight: bold;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: 1px solid #007BFF;
+  background-color: white;
+  color: #007BFF;
+  border-radius: 4px;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pagination span {
+  margin: 0 10px;
+  font-size: 1.2rem;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 10px;
@@ -121,6 +169,15 @@ export default {
 
   .notice-table th, .notice-table td {
     font-size: 0.875rem;
+  }
+
+  .pagination button {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+  }
+
+  .pagination span {
+    font-size: 1rem;
   }
 }
 </style>

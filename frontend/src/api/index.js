@@ -15,9 +15,14 @@ function createInstance() {
 
 export const instance = createInstance()
 
-export async function axiosGetNotice() {
+export async function axiosGetNotice(page, size) {
     try {
-        return await instance.get("/notice");
+        return instance.get(`/notice`, {
+            params: {
+                page: page - 1,
+                size: size
+            }
+        });
     } catch (error) {
         const errorMessage = handleError(error);
         openModal("ERROR", errorMessage);
