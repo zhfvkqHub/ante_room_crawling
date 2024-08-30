@@ -33,12 +33,12 @@ public class ElyesCrawlingService {
                         noticeElement.select("td").get(2).text(),
                         DateTimeFormatter.ofPattern("yyyy.MM.dd")
                 );
+                String link = "https://www.elyes.co.kr/info/notice.do";
 
                 // 해당 공지사항이 이미 존재하는지 확인
-                boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(siteUrl, title, publishedDate);
+                boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(link, title, publishedDate);
                 if (!exists) {
-                    String link = "https://www.elyes.co.kr/info/notice.do";
-                    Notice newNotice = Notice.create(siteUrl, title, publishedDate, link);
+                    Notice newNotice = Notice.create(link, title, publishedDate, link);
 
                     noticeRepository.save(newNotice);
                     notificationService.sendNotification(newNotice);
