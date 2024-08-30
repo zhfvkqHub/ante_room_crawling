@@ -38,7 +38,7 @@ public class ElyesCrawlingService {
                 // 해당 공지사항이 이미 존재하는지 확인
                 boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(link, title, publishedDate);
                 if (!exists) {
-                    Notice newNotice = Notice.create(link, title, publishedDate, link);
+                    Notice newNotice = Notice.create(link, title, publishedDate, null);
 
                     noticeRepository.save(newNotice);
                     notificationService.sendNotification(newNotice);
