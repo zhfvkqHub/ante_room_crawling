@@ -30,6 +30,10 @@ dependencies {
     // mariadb
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 
+    // selenium
+    implementation("org.seleniumhq.selenium:selenium-java:4.18.1")
+    implementation("org.seleniumhq.selenium:selenium-chrome-driver:4.18.1")
+
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("org.jsoup:jsoup:1.15.3")
