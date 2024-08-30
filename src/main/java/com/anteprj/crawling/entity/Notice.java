@@ -33,7 +33,7 @@ public class Notice {
     private String title;
     @Column(name = "published_date", nullable = false)
     private LocalDate publishedDate;
-    @Column(name = "link", nullable = false)
+    @Column(name = "link")
     private String link;
 
     public static Notice create(
