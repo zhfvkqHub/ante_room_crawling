@@ -1,4 +1,4 @@
-package com.anteprj.crawling.config;
+package com.anteprj.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
