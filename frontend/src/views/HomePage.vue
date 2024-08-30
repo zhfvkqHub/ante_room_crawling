@@ -1,30 +1,28 @@
 <template>
   <div class="container">
-    <h1 class="title">Notice List</h1>
+    <h1 class="title">공지사항 목록</h1>
     <table class="notice-table">
       <thead>
       <tr>
-        <th>ID</th>
-        <th>Site URL</th>
-        <th>Title</th>
-        <th>Published Date</th>
-        <th>Link</th>
+        <th width="10%">번호</th>
+        <th width="55%">제목</th>
+        <th width="20%">게시일</th>
+        <th width="15%">사이트</th>
       </tr>
       </thead>
       <tbody>
       <tr v-for="notice in notices" :key="notice.id" :class="{'highlight-today': isToday(notice.publishedDate)}">
         <td>{{ notice.id }}</td>
-        <td>{{ notice.siteUrl }}</td>
         <td>{{ notice.title }}</td>
         <td>{{ notice.publishedDate }}</td>
-        <td><a :href="notice.link" target="_blank" class="notice-link">View Notice</a></td>
+        <td><a :href="notice.siteUrl" target="_blank" class="notice-link">보기</a></td>
       </tr>
       </tbody>
     </table>
     <div class="pagination">
-      <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
-      <span>Page {{ currentPage }} of {{ totalPages }}</span>
-      <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+      <button @click="prevPage" :disabled="currentPage === 1">이전</button>
+      <span>페이지 {{ currentPage }} / {{ totalPages }}</span>
+      <button @click="nextPage" :disabled="currentPage === totalPages">다음</button>
     </div>
   </div>
 </template>
@@ -73,47 +71,51 @@ export default {
 
 <style scoped>
 .container {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 40px auto;
   padding: 20px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 .title {
   text-align: center;
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: #333;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  font-weight: bold;
 }
 
 .notice-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: white;
+  background-color: #f9f9f9;
   border-radius: 8px;
   overflow: hidden;
 }
 
 .notice-table th, .notice-table td {
-  padding: 12px 15px;
+  padding: 15px 20px;
   text-align: left;
   font-size: 1rem;
+  border-bottom: 1px solid #ddd;
 }
 
 .notice-table thead {
   background-color: #007BFF;
   color: white;
   font-weight: bold;
+  text-transform: uppercase;
 }
 
 .notice-table tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #f4f4f4;
 }
 
 .notice-table tbody tr:hover {
-  background-color: #e9ecef;
+  background-color: #e2e6ea;
 }
 
 .notice-link {
@@ -127,25 +129,33 @@ export default {
 }
 
 .highlight-today {
-  background-color: cornflowerblue;
+  background-color: #FFD700;
+  color: #333;
   font-weight: bold;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .pagination {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .pagination button {
-  margin: 0 5px;
-  padding: 10px 20px;
+  margin: 0 10px;
+  padding: 10px 15px;
   font-size: 1rem;
   cursor: pointer;
   border: 1px solid #007BFF;
   background-color: white;
   color: #007BFF;
   border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #007BFF;
+  color: white;
 }
 
 .pagination button:disabled {
@@ -154,8 +164,9 @@ export default {
 }
 
 .pagination span {
-  margin: 0 10px;
+  margin: 0 15px;
   font-size: 1.2rem;
+  color: #555;
 }
 
 @media (max-width: 768px) {
@@ -164,7 +175,7 @@ export default {
   }
 
   .title {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 
   .notice-table th, .notice-table td {
@@ -172,7 +183,7 @@ export default {
   }
 
   .pagination button {
-    padding: 8px 16px;
+    padding: 8px 14px;
     font-size: 0.875rem;
   }
 

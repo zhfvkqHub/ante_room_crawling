@@ -36,7 +36,9 @@ public class ForenaTangsanCrawlingService {
                 Document iframeDoc = JsoupUtils.getDocument(fullIframeUrl);
                 if (iframeDoc != null) {
                     Elements notices = iframeDoc.select(".tbl_head01 tbody tr");
-                    for (Element noticeElement : notices) {
+                    // 년도 정보가 없는 이유로 최근 3개의 공지만 확인
+                    for (int i = 0; i < 3; i++) {
+                        Element noticeElement = notices.get(i);
                         String title = noticeElement.select("td a").text();
                         if (!title.contains("모집")) {
                             continue;
