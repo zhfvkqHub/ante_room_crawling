@@ -5,12 +5,12 @@ const router = createRouter({
     routes: [
         {
             path: '/',
-            redirect: '/home',
+            redirect: '/notice',
         },
         {
-            path: '/home',
-            name: 'Home',
-            component: () => import('@/views/HomePage.vue'),
+            path: '/notice',
+            name: 'NoticeMain',
+            component: () => import('@/views/NoticeMain.vue'),
             meta: {
                 title: '공실 서비스'
             }
