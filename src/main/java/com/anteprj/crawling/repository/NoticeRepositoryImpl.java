@@ -10,7 +10,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
 
-import static com.anteprj.crawling.entity.QNotice.notice;
+import static com.anteprj.entity.QNotice.notice;
 
 @RequiredArgsConstructor
 public class NoticeRepositoryImpl implements NoticeRepositoryCustom {
@@ -22,10 +22,10 @@ public class NoticeRepositoryImpl implements NoticeRepositoryCustom {
         List<NoticeResponse> adminResults = queryFactory.select(
                         new QNoticeResponse(
                                 notice.id,
+                                notice.siteName,
                                 notice.siteUrl,
                                 notice.title,
-                                notice.publishedDate,
-                                notice.link
+                                notice.publishedDate
                         ))
                 .from(notice)
                 .offset(pageable.getOffset())

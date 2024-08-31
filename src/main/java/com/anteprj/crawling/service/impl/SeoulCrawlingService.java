@@ -1,8 +1,10 @@
-package com.anteprj.crawling.service;
+package com.anteprj.crawling.service.impl;
 
-import com.anteprj.crawling.entity.Notice;
 import com.anteprj.crawling.repository.NoticeRepository;
+import com.anteprj.crawling.service.CrawlingService;
+import com.anteprj.entity.Notice;
 import com.anteprj.notice.service.NotificationService;
+import com.anteprj.util.WebDriverUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -10,9 +12,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,18 +21,20 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SeoulCrawlingService {
+public class SeoulCrawlingService implements CrawlingService {
 
     private final NoticeRepository noticeRepository;
     private final NotificationService notificationService;
-    private final String siteUrl = "https://soco.seoul.go.kr/youth/bbs/BMSR00015/list.do?menuNo=400008";
+    private final WebDriverUtil webDriverUtil;
+    private static final String SITE_URL = "https://soco.seoul.go.kr/youth/bbs/BMSR00015/list.do?menuNo=400008";
 
+    @Override
+    @Transactional
     public void checkNewNotices() {
-        System.setProperty("webdriver.chrome.driver", "./driver/chromedriver.exe");
-        WebDriver driver = getWebDriver();
+        WebDriver driver = webDriverUtil.getWebDriver();
 
         try {
-            driver.get(siteUrl);
+            driver.get(SITE_URL);
 
             String pageSource = driver.getPageSource();
             Document doc = Jsoup.parse(pageSource);
@@ -43,19 +46,6 @@ public class SeoulCrawlingService {
         }
     }
 
-    private static WebDriver getWebDriver() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");  // 브라우저 창을 띄우지 않음
-        options.addArguments("--disable-gpu");  // GPU 가속을 비활성화
-        options.addArguments("--no-sandbox");  // 리눅스 환경에서 필요한 옵션
-        options.addArguments("--disable-dev-shm-usage");  // 리눅스 환경에서 필요한 옵션
-        options.addArguments("--remote-allow-origins=*");  // 원격 디버깅 허용
-        options.addArguments("--disable-software-rasterizer"); // 소프트웨어 래스터라이저 비활성화
-        options.addArguments("--window-size=1920,1080");  // 가상 화면 크기 지정
-
-        return new ChromeDriver(options);
-    }
-
     private void processNotices(Document doc) {
         Elements notices = doc.select(".tableWrap .boardTable tbody tr");
         for (Element noticeElement : notices) {
@@ -63,10 +53,10 @@ public class SeoulCrawlingService {
             String dateText = noticeElement.select("td").get(3).text();
             LocalDate publishedDate = LocalDate.parse(dateText, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-            boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(siteUrl, title, publishedDate);
+            boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
             if (!exists) {
                 String link = "https://soco.seoul.go.kr/youth/bbs/BMSR00015/" + noticeElement.select("tr td a").attr("href");
-                Notice newNotice = Notice.create(siteUrl, title, publishedDate, link);
+                Notice newNotice = Notice.create("청년안심주택", SITE_URL, title, publishedDate);
 
                 noticeRepository.save(newNotice);
                 notificationService.sendNotification(newNotice);

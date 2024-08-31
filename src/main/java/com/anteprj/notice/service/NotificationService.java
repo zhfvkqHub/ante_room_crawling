@@ -1,6 +1,6 @@
 package com.anteprj.notice.service;
 
-import com.anteprj.crawling.entity.Notice;
+import com.anteprj.entity.Notice;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
