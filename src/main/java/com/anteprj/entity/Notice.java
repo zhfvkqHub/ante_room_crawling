@@ -1,4 +1,4 @@
-package com.anteprj.crawling.entity;
+package com.anteprj.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,26 +27,26 @@ public class Notice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "site_name", nullable = false)
+    private String siteName;
     @Column(name = "site_url", nullable = false)
     private String siteUrl;
     @Column(name = "title", nullable = false)
     private String title;
     @Column(name = "published_date", nullable = false)
     private LocalDate publishedDate;
-    @Column(name = "link")
-    private String link;
 
     public static Notice create(
+            String siteName,
             String siteUrl,
             String title,
-            LocalDate publishedDate,
-            String link
+            LocalDate publishedDate
     ) {
         return Notice.builder()
+                .siteName(siteName)
                 .siteUrl(siteUrl)
                 .title(title)
                 .publishedDate(publishedDate)
-                .link(link)
                 .build();
     }
 }

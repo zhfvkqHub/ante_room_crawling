@@ -1,7 +1,8 @@
-package com.anteprj.crawling.service;
+package com.anteprj.crawling.service.impl;
 
-import com.anteprj.crawling.entity.Notice;
 import com.anteprj.crawling.repository.NoticeRepository;
+import com.anteprj.crawling.service.CrawlingService;
+import com.anteprj.entity.Notice;
 import com.anteprj.notice.service.NotificationService;
 import com.anteprj.util.JsoupUtils;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +11,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.net.IDN;
 import java.time.LocalDate;
 import java.time.MonthDay;
 import java.time.format.DateTimeFormatter;
@@ -19,14 +20,16 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ForenaTangsanCrawlingService {
+public class ForenaTangsanCrawlingService implements CrawlingService {
 
     private final NoticeRepository noticeRepository;
     private final NotificationService notificationService;
-    private final String siteUrl = "https://www.xn--910b48b70glxklhy.com/notice.html";
+    private static final String SITE_URL = "https://www.xn--910b48b70glxklhy.com/notice.html";
 
+    @Override
+    @Transactional
     public void checkNewNotices() {
-        Document doc = JsoupUtils.getDocument(siteUrl);
+        Document doc = JsoupUtils.getDocument(SITE_URL);
         if (doc != null) {
             Element iframe = doc.selectFirst("iframe#guest_ifr");
             if (iframe != null) {
@@ -48,10 +51,10 @@ public class ForenaTangsanCrawlingService {
                         MonthDay monthDay = MonthDay.parse(dateText, DateTimeFormatter.ofPattern("MM-dd"));
                         LocalDate publishedDate = monthDay.atYear(LocalDate.now().getYear());
 
-                        boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(siteUrl, title, publishedDate);
+                        boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
                         if (!exists) {
-                            String link = noticeElement.select("td a").attr("href");
-                            Notice newNotice = Notice.create(siteUrl, title, publishedDate, link);
+//                            String link = noticeElement.select("td a").attr("href");
+                            Notice newNotice = Notice.create("포레나당산", SITE_URL, title, publishedDate);
 
                             noticeRepository.save(newNotice);
                             notificationService.sendNotification(newNotice);

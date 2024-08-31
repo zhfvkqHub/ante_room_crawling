@@ -6,10 +6,10 @@ import java.time.LocalDate;
 
 public record NoticeResponse(
         Long id,
+        String siteName,
         String siteUrl,
         String title,
-        LocalDate publishedDate,
-        String link
+        LocalDate publishedDate
 
 ) {
     @QueryProjection

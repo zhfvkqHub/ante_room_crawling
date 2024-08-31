@@ -1,6 +1,6 @@
 package com.anteprj.notice.mapper;
 
-import com.anteprj.crawling.entity.Notice;
+import com.anteprj.entity.Notice;
 import com.anteprj.notice.dto.NoticeResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;

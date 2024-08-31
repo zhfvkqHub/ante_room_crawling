@@ -1,24 +1,22 @@
 package com.anteprj.crawling.controller;
 
-import com.anteprj.crawling.service.ElyesCrawlingService;
-import com.anteprj.crawling.service.ForenaTangsanCrawlingService;
-import com.anteprj.crawling.service.SeoulCrawlingService;
+import com.anteprj.crawling.service.CrawlingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class ScheduleController {
 
-    private final ElyesCrawlingService elyesCrawlingService;
-    private final SeoulCrawlingService seoulCrawlingService;
-    private final ForenaTangsanCrawlingService forenaTangsanCrawlingService;
+    private final List<CrawlingService> crawlingServices;
 
-     @Scheduled(fixedDelay = 60000)
-     public void crawling() {
-         elyesCrawlingService.checkNewNotices();
-         seoulCrawlingService.checkNewNotices();
-         forenaTangsanCrawlingService.checkNewNotices();
-     }
+    @Scheduled(fixedDelay = 60000)
+    public void crawling() {
+        for (CrawlingService service : crawlingServices) {
+            service.checkNewNotices();
+        }
+    }
 }
