@@ -12,10 +12,14 @@ const router = createRouter({
             name: 'NoticeMain',
             component: () => import('@/views/NoticeMain.vue'),
             meta: {
-                title: '공실 서비스'
+                title: '모집공고',
             }
         },
     ],
+});
+
+router.beforeEach((to) => {
+    document.title = to.meta.title === undefined ? '청년안심주택' : to.meta.title;
 });
 
 export default router;
