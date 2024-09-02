@@ -115,7 +115,7 @@ export default {
 }
 
 .highlight-today {
-  background-color: #F39C12;
+  background-color: #F39C12 !important;
   color: #ffffff;
   font-weight: bold;
 }
