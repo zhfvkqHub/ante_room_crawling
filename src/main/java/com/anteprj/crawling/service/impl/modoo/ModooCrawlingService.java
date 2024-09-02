@@ -69,7 +69,13 @@ public class ModooCrawlingService implements CrawlingService {
         for (Element noticeElement : notices) {
             String title = noticeElement.select("td a").text();
             String dateText = noticeElement.select("td").get(3).text();
-            LocalDate publishedDate = LocalDate.parse(dateText, DateTimeFormatter.ofPattern("yyyy.M.d"));
+
+            LocalDate publishedDate;
+            if (dateText.contains("시간")) {
+                publishedDate = LocalDate.now();
+            } else {
+                publishedDate = LocalDate.parse(dateText, DateTimeFormatter.ofPattern("yyyy.M.d"));
+            }
 
             boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(siteUrl, title, publishedDate);
             if (!exists) {
@@ -81,4 +87,3 @@ public class ModooCrawlingService implements CrawlingService {
         }
     }
 }
-
