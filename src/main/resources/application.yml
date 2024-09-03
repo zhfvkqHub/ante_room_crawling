@@ -26,3 +26,7 @@ logging:
 
 server:
   port: 8085
+
+webdriver:
+  chrome:
+    path: ./driver/chromedriver.exe

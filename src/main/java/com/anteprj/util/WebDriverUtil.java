@@ -7,9 +7,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class WebDriverUtil {
-
+    // todo properties로 path 설정
     static {
-        System.setProperty("webdriver.chrome.driver", "./driver/chromedriver.exe");
+        //System.setProperty("webdriver.chrome.driver", "./driver/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
     }
 
     public WebDriver getWebDriver() {
