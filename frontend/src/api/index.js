@@ -25,3 +25,7 @@ export async function axiosGetNotice(params) {
         openModal("ERROR", errorMessage);
     }
 }
+
+export const axiosGetLastCrawlingTime = () => {
+    return instance.get('/notice/last-crawled-time');
+};

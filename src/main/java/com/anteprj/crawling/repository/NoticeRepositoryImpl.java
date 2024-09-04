@@ -43,9 +43,6 @@ public class NoticeRepositoryImpl implements NoticeRepositoryCustom {
                 .orderBy(notice.publishedDate.desc())
                 .fetch();
 
-        log.info("Query Result: {}", adminResults);
-
-
         return PageableExecutionUtils.getPage(adminResults, pageable, () -> getCount(request));
     }
 
