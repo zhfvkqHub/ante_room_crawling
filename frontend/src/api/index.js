@@ -15,13 +15,10 @@ function createInstance() {
 
 export const instance = createInstance()
 
-export async function axiosGetNotice(page, size) {
+export async function axiosGetNotice(params) {
     try {
         return instance.get(`/notice`, {
-            params: {
-                page: page - 1,
-                size: size
-            }
+            params
         });
     } catch (error) {
         const errorMessage = handleError(error);

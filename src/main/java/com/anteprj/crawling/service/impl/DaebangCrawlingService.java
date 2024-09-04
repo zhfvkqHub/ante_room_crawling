@@ -3,6 +3,7 @@ package com.anteprj.crawling.service.impl;
 import com.anteprj.crawling.repository.NoticeRepository;
 import com.anteprj.crawling.service.CrawlingService;
 import com.anteprj.entity.Notice;
+import com.anteprj.entity.constant.SiteName;
 import com.anteprj.notice.service.NotificationService;
 import com.anteprj.util.JsoupUtils;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class DaebangCrawlingService implements CrawlingService {
                 
                 boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
                 if (!exists) {
-                    Notice newNotice = Notice.create("신대방삼거리역 골든노블레스", SITE_URL, title, publishedDate);
+                    Notice newNotice = Notice.create(SiteName.DONGJAK_GOLDEN_NOBLESS, SITE_URL, title, publishedDate);
 
                     noticeRepository.save(newNotice);
                     notificationService.sendNotification(newNotice);

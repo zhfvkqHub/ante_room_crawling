@@ -3,6 +3,7 @@ package com.anteprj.crawling.service.impl;
 import com.anteprj.crawling.repository.NoticeRepository;
 import com.anteprj.crawling.service.CrawlingService;
 import com.anteprj.entity.Notice;
+import com.anteprj.entity.constant.SiteName;
 import com.anteprj.notice.service.NotificationService;
 import com.anteprj.util.JsoupUtils;
 import lombok.RequiredArgsConstructor;
@@ -53,8 +54,7 @@ public class ForenaTangsanCrawlingService implements CrawlingService {
 
                         boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
                         if (!exists) {
-//                            String link = noticeElement.select("td a").attr("href");
-                            Notice newNotice = Notice.create("포레나당산", SITE_URL, title, publishedDate);
+                            Notice newNotice = Notice.create(SiteName.FORENA_DANGSAN, SITE_URL, title, publishedDate);
 
                             noticeRepository.save(newNotice);
                             notificationService.sendNotification(newNotice);

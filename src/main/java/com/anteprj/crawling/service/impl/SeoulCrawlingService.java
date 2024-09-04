@@ -3,6 +3,7 @@ package com.anteprj.crawling.service.impl;
 import com.anteprj.crawling.repository.NoticeRepository;
 import com.anteprj.crawling.service.CrawlingService;
 import com.anteprj.entity.Notice;
+import com.anteprj.entity.constant.SiteName;
 import com.anteprj.notice.service.NotificationService;
 import com.anteprj.util.WebDriverUtil;
 import lombok.RequiredArgsConstructor;
@@ -55,8 +56,7 @@ public class SeoulCrawlingService implements CrawlingService {
 
             boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
             if (!exists) {
-                String link = "https://soco.seoul.go.kr/youth/bbs/BMSR00015/" + noticeElement.select("tr td a").attr("href");
-                Notice newNotice = Notice.create("청년안심주택", SITE_URL, title, publishedDate);
+                Notice newNotice = Notice.create(SiteName.YOUTH_SAFE_HOUSE, SITE_URL, title, publishedDate);
 
                 noticeRepository.save(newNotice);
                 notificationService.sendNotification(newNotice);

@@ -1,6 +1,7 @@
 package com.anteprj.notice.service;
 
 import com.anteprj.crawling.repository.NoticeRepository;
+import com.anteprj.notice.dto.NoticeRequest;
 import com.anteprj.notice.dto.NoticeResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,8 +15,8 @@ public class NoticeApiService {
     private final NoticeRepository noticeRepository;
 
     @Transactional(readOnly = true)
-    public Page<NoticeResponse> getNotice(int page, int size) {
+    public Page<NoticeResponse> getNotice(NoticeRequest request) {
         return noticeRepository.findNotices(
-                PageRequest.of(page, size));
+                request, PageRequest.of(request.page(), request.size()));
     }
 }

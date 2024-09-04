@@ -4,6 +4,7 @@ import com.anteprj.crawling.SiteInfo;
 import com.anteprj.crawling.repository.NoticeRepository;
 import com.anteprj.crawling.service.CrawlingService;
 import com.anteprj.entity.Notice;
+import com.anteprj.entity.constant.SiteName;
 import com.anteprj.notice.service.NotificationService;
 import com.anteprj.util.WebDriverUtil;
 import lombok.RequiredArgsConstructor;
@@ -34,12 +35,12 @@ public class ModooCrawlingService implements CrawlingService {
     private final WebDriverUtil webDriverUtil;
 
     private static final List<SiteInfo> SITE_URLS = List.of(
-            SiteInfo.of("서초꽃마을주얼리", "https://seocho1502.modoo.at/?link=8a7g4ml6"),
-            SiteInfo.of("제이스타상봉", "https://jstar2030.modoo.at/?link=26i11qts"),
-            SiteInfo.of("BX201서울대", "https://bx201seoul.modoo.at/?link=3gs5oxwu"),
-            SiteInfo.of("동대문역사문화공원", "https://166tower.modoo.at/?link=5j8b3kfn"),
-            SiteInfo.of("도림브라보", "https://dorimbravo.modoo.at/?link=286i2ogk"),
-            SiteInfo.of("더클래식동작", "https://theclassic2030.modoo.at/?link=eez99qhu")
+            SiteInfo.of(SiteName.SEOCHEO_FLOWER_VILLAGE_JEWELRY, "https://seocho1502.modoo.at/?link=8a7g4ml6"),
+            SiteInfo.of(SiteName.J_STAR_SANGBONG, "https://jstar2030.modoo.at/?link=26i11qts"),
+            SiteInfo.of(SiteName.BX201_SEOUL_NATIONAL_UNIVERSITY, "https://bx201seoul.modoo.at/?link=3gs5oxwu"),
+            SiteInfo.of(SiteName.DONGDAEMUN_HISTORY_CULTURE_PARK, "https://166tower.modoo.at/?link=5j8b3kfn"),
+            SiteInfo.of(SiteName.DORIM_BRAVO, "https://dorimbravo.modoo.at/?link=286i2ogk"),
+            SiteInfo.of(SiteName.THE_CLASSIC_DONGJAK, "https://theclassic2030.modoo.at/?link=eez99qhu")
     );
 
     @Override
@@ -64,7 +65,7 @@ public class ModooCrawlingService implements CrawlingService {
         }
     }
 
-    private void processNotices(Document doc, String siteUrl, String siteName) {
+    private void processNotices(Document doc, String siteUrl, SiteName siteName) {
         Elements notices = doc.select(".table_type1 tbody tr");
         for (Element noticeElement : notices) {
             String title = noticeElement.select("td a").text();

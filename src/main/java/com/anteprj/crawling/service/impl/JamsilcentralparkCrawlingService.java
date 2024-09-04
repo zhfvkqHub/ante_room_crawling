@@ -3,6 +3,7 @@ package com.anteprj.crawling.service.impl;
 import com.anteprj.crawling.repository.NoticeRepository;
 import com.anteprj.crawling.service.CrawlingService;
 import com.anteprj.entity.Notice;
+import com.anteprj.entity.constant.SiteName;
 import com.anteprj.notice.service.NotificationService;
 import com.anteprj.util.JsoupUtils;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class JamsilcentralparkCrawlingService implements CrawlingService {
         if (doc != null) {
             Elements notices = doc.select("#accordion .acd_row");
             for (Element noticeElement : notices) {
-                String title = noticeElement.select("div").get(0).select(".title .tabled .table-cell").text();
+                String title = noticeElement.select("div").getFirst().select(".title .tabled .table-cell").text();
                 if (!title.contains("추가모집")) {
                     continue;
                 }
@@ -42,7 +43,7 @@ public class JamsilcentralparkCrawlingService implements CrawlingService {
 
                 boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
                 if (!exists) {
-                    Notice newNotice = Notice.create("잠실센트럴파크", SITE_URL, title, publishedDate);
+                    Notice newNotice = Notice.create(SiteName.JAMSIL_CENTRAL_PARK, SITE_URL, title, publishedDate);
 
                     noticeRepository.save(newNotice);
                     notificationService.sendNotification(newNotice);
