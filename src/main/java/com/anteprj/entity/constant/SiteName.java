@@ -16,6 +16,7 @@ public enum SiteName {
     FORENA_DANGSAN("포레나당산"),
     JAMSIL_CENTRAL_PARK("잠실센트럴파크"),
     YOUTH_SAFE_HOUSE("청년안심주택"),
+    HUIKYUNG_J_STAR_SKY_CITY("휘경제이스카이시티"),
     ;
 
     private final String siteName;
