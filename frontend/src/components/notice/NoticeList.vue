@@ -119,7 +119,7 @@ export default {
     },
     formatCrawlingTime(time) {
       if (!time) return null;
-      return format(new Date(time), 'yyyy-MM-dd HH:mm:ss');
+      return format(new Date(time), 'yyyy년 MM월 dd일 HH:mm');
     }
   }
 }
