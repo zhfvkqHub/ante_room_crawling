@@ -1,12 +1,6 @@
 <template>
   <div>
     <div class="search-bar">
-      <select v-model="selectedSiteName" @change="fetchNotices" class="filter-select">
-        <option value="">All Sites</option>
-        <option v-for="site in siteOptions" :key="site.value" :value="site.value">
-          {{ site.name }}
-        </option>
-      </select>
       <input
           v-model="searchKeyword"
           @keyup.enter="fetchNotices"
@@ -14,7 +8,17 @@
           placeholder="Search..."
           class="search-input"
       />
+      <select v-model="selectedSiteName" @change="fetchNotices" class="filter-select">
+        <option value="">All Sites</option>
+        <option v-for="site in siteOptions" :key="site.value" :value="site.value">
+          {{ site.name }}
+        </option>
+      </select>
       <button @click="fetchNotices" class="search-button">Search</button>
+    </div>
+
+    <div class="last-crawled-time">
+      마지막 크롤링 시간: {{ lastCrawledTime || '불러오는 중...' }}
     </div>
 
     <table class="notice-table">
@@ -48,7 +52,7 @@
 
 <script>
 import {format} from 'date-fns';
-import {axiosGetNotice} from '@/api';
+import {axiosGetLastCrawlingTime, axiosGetNotice} from '@/api';
 
 export default {
   data() {
@@ -59,6 +63,7 @@ export default {
       pageSize: 15,
       searchKeyword: '',
       selectedSiteName: '',
+      lastCrawledTime: '',
       siteOptions: [
         { name: "서초꽃마을주얼리", value: "SEOCHEO_FLOWER_VILLAGE_JEWELRY" },
         { name: "제이스타상봉", value: "J_STAR_SANGBONG" },
@@ -76,6 +81,7 @@ export default {
   },
   mounted() {
     this.fetchNotices();
+    this.fetchLastCrawledTime();
   },
   methods: {
     async fetchNotices() {
@@ -90,6 +96,10 @@ export default {
       const response = await axiosGetNotice(params);
       this.notices = response.data.content;
       this.totalPages = response.data.totalPages;
+    },
+    async fetchLastCrawledTime() {
+      const response = await axiosGetLastCrawlingTime();
+      this.lastCrawledTime = this.formatCrawlingTime(response.data.lastCrawlingTime);
     },
     nextPage() {
       if (this.currentPage < this.totalPages) {
@@ -106,6 +116,10 @@ export default {
     isToday(dateString) {
       const today = format(new Date(), 'yyyy-MM-dd');
       return dateString === today;
+    },
+    formatCrawlingTime(time) {
+      if (!time) return null;
+      return format(new Date(time), 'yyyy-MM-dd HH:mm:ss');
     }
   }
 }
@@ -234,5 +248,11 @@ export default {
 
 .search-button:hover {
   background-color: #1A5276;
+}
+
+.last-crawled-time {
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  color: #333;
 }
 </style>
