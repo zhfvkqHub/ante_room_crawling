@@ -1,5 +1,22 @@
 <template>
   <div>
+    <div class="search-bar">
+      <select v-model="selectedSiteName" @change="fetchNotices" class="filter-select">
+        <option value="">All Sites</option>
+        <option v-for="site in siteOptions" :key="site.value" :value="site.value">
+          {{ site.name }}
+        </option>
+      </select>
+      <input
+          v-model="searchKeyword"
+          @keyup.enter="fetchNotices"
+          type="text"
+          placeholder="Search..."
+          class="search-input"
+      />
+      <button @click="fetchNotices" class="search-button">Search</button>
+    </div>
+
     <table class="notice-table">
       <thead>
       <tr>
@@ -20,6 +37,7 @@
       </tr>
       </tbody>
     </table>
+
     <div class="pagination">
       <button @click="prevPage" :disabled="currentPage === 1">이전</button>
       <span>페이지 {{ currentPage }} / {{ totalPages }}</span>
@@ -29,38 +47,65 @@
 </template>
 
 <script>
-import { format } from 'date-fns';
+import {format} from 'date-fns';
+import {axiosGetNotice} from '@/api';
 
 export default {
-  props: {
-    notices: {
-      type: Array,
-      required: true
-    },
-    currentPage: {
-      type: Number,
-      required: true
-    },
-    pageSize: {
-      type: Number,
-      required: true
-    },
-    totalPages: {
-      type: Number,
-      required: true
+  data() {
+    return {
+      notices: [],
+      currentPage: 1,
+      totalPages: 1,
+      pageSize: 15,
+      searchKeyword: '',
+      selectedSiteName: '',
+      siteOptions: [
+        { name: "서초꽃마을주얼리", value: "SEOCHEO_FLOWER_VILLAGE_JEWELRY" },
+        { name: "제이스타상봉", value: "J_STAR_SANGBONG" },
+        { name: "BX201서울대", value: "BX201_SEOUL_NATIONAL_UNIVERSITY" },
+        { name: "동대문역사문화공원", value: "DONGDAEMUN_HISTORY_CULTURE_PARK" },
+        { name: "도림브라보", value: "DORIM_BRAVO" },
+        { name: "더클래식동작", value: "THE_CLASSIC_DONGJAK" },
+        { name: "신대방삼거리역골든노블레스", value: "DONGJAK_GOLDEN_NOBLESS" },
+        { name: "엘리스", value: "ELLICE" },
+        { name: "포레나당산", value: "FORENA_DANGSAN" },
+        { name: "잠실센트럴파크", value: "JAMSIL_CENTRAL_PARK" },
+        { name: "청년안심주택", value: "YOUTH_SAFE_HOUSE" }
+      ]
     }
   },
-  emits: ['prevPage', 'nextPage'],
+  mounted() {
+    this.fetchNotices();
+  },
   methods: {
+    async fetchNotices() {
+      const params = {
+        page: this.currentPage - 1,
+        size: this.pageSize,
+        siteName: this.selectedSiteName || null,
+        searchType: 'TITLE',
+        searchKeyword: this.searchKeyword || null
+      };
+
+      const response = await axiosGetNotice(params);
+      this.notices = response.data.content;
+      this.totalPages = response.data.totalPages;
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.fetchNotices();
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.fetchNotices();
+      }
+    },
     isToday(dateString) {
       const today = format(new Date(), 'yyyy-MM-dd');
       return dateString === today;
-    },
-    prevPage() {
-      this.$emit('prevPage');
-    },
-    nextPage() {
-      this.$emit('nextPage');
     }
   }
 }
@@ -152,5 +197,42 @@ export default {
   margin: 0 15px;
   font-size: 1.2rem;
   color: #555;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  flex-grow: 1;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.filter-select {
+  padding: 10px;
+  margin-left: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.search-button {
+  margin-left: 10px;
+  padding: 10px 15px;
+  font-size: 1rem;
+  background-color: #2980B9;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #1A5276;
 }
 </style>

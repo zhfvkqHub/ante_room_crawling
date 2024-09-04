@@ -1,7 +1,10 @@
 package com.anteprj.entity;
 
+import com.anteprj.entity.constant.SiteName;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,17 +30,21 @@ public class Notice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "site_name", nullable = false)
-    private String siteName;
+    private SiteName siteName;
+
     @Column(name = "site_url", nullable = false)
     private String siteUrl;
+
     @Column(name = "title", nullable = false)
     private String title;
+
     @Column(name = "published_date", nullable = false)
     private LocalDate publishedDate;
 
     public static Notice create(
-            String siteName,
+            SiteName siteName,
             String siteUrl,
             String title,
             LocalDate publishedDate

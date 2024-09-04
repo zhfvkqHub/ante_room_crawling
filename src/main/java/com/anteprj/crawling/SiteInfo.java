@@ -1,10 +1,12 @@
 package com.anteprj.crawling;
 
+import com.anteprj.entity.constant.SiteName;
+
 public record SiteInfo(
-        String name,
+        SiteName name,
         String url
 ) {
-    public static SiteInfo of(String name, String url) {
+    public static SiteInfo of(SiteName name, String url) {
         return new SiteInfo(name, url);
     }
 }

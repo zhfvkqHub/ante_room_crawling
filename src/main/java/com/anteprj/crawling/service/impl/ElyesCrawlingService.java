@@ -3,6 +3,7 @@ package com.anteprj.crawling.service.impl;
 import com.anteprj.crawling.repository.NoticeRepository;
 import com.anteprj.crawling.service.CrawlingService;
 import com.anteprj.entity.Notice;
+import com.anteprj.entity.constant.SiteName;
 import com.anteprj.notice.service.NotificationService;
 import com.anteprj.util.JsoupUtils;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class ElyesCrawlingService implements CrawlingService {
                 // 해당 공지사항이 이미 존재하는지 확인
                 boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(link, title, publishedDate);
                 if (!exists) {
-                    Notice newNotice = Notice.create("엘리스", link, title, publishedDate);
+                    Notice newNotice = Notice.create(SiteName.ELLICE, link, title, publishedDate);
 
                     noticeRepository.save(newNotice);
                     notificationService.sendNotification(newNotice);
