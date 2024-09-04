@@ -19,7 +19,7 @@ public class ScheduleController {
     private final NoticeApiService noticeApiService;
     private final LastCrawlingTimeRepository lastCrawlingTimeRepository;
 
-    @Scheduled(cron = "${scheduler.cron.crawling}")
+    @Scheduled(cron = "${scheduler.cron.crawling}", zone = "Asia/Seoul")
     public void crawling() {
         for (CrawlingService service : crawlingServices) {
             service.checkNewNotices();
