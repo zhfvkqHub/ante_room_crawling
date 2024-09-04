@@ -30,3 +30,7 @@ server:
 webdriver:
   chrome:
     path: ./driver/chromedriver.exe
+
+scheduler:
+  cron:
+    crawling: 0 0/1 * * * ?

@@ -1,16 +1,21 @@
 package com.anteprj.util;
 
+import jakarta.annotation.PostConstruct;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class WebDriverUtil {
-    // todo properties로 path 설정
-    static {
-        //System.setProperty("webdriver.chrome.driver", "./driver/chromedriver.exe");
-        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+
+    @Value("${webdriver.chrome.path}")
+    private String chromeDriverPath;
+
+    @PostConstruct
+    public void init() {
+        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
     }
 
     public WebDriver getWebDriver() {
