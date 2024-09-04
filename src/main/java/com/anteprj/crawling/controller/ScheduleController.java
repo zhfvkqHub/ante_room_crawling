@@ -13,7 +13,7 @@ public class ScheduleController {
 
     private final List<CrawlingService> crawlingServices;
 
-    @Scheduled(cron = "0 0/30 8-19 * * MON-FRI")
+    @Scheduled(cron = "${scheduler.cron.crawling}")
     public void crawling() {
         for (CrawlingService service : crawlingServices) {
             service.checkNewNotices();

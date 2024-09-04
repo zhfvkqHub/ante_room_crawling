@@ -14,3 +14,7 @@ logging:
 webdriver:
   chrome:
     path: /usr/local/bin/chromedriver
+
+scheduler:
+  cron:
+    crawling: 0 0/30 8-19 * * MON-FRI
