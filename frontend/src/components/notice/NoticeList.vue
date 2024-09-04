@@ -18,7 +18,7 @@
     </div>
 
     <div class="last-crawled-time">
-      마지막 크롤링 시간: {{ lastCrawledTime || '불러오는 중...' }}
+      마지막 업데이트 완료 시간: {{ lastCrawledTime || '불러오는 중...' }}
     </div>
 
     <table class="notice-table">
