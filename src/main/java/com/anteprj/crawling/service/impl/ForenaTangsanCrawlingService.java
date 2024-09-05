@@ -54,7 +54,7 @@ public class ForenaTangsanCrawlingService implements CrawlingService {
 
                         boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
                         if (!exists) {
-                            Notice newNotice = Notice.create(SiteName.FORENA_DANGSAN, SITE_URL, title, publishedDate);
+                            Notice newNotice = Notice.create(SiteName.FORENA_DANGSAN, SiteName.FORENA_DANGSAN.getConstituency(), SITE_URL, title, publishedDate);
 
                             noticeRepository.save(newNotice);
                             notificationService.sendNotification(newNotice);

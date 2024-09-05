@@ -56,7 +56,7 @@ public class SeoulCrawlingService implements CrawlingService {
 
             boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
             if (!exists) {
-                Notice newNotice = Notice.create(SiteName.YOUTH_SAFE_HOUSE, SITE_URL, title, publishedDate);
+                Notice newNotice = Notice.create(SiteName.YOUTH_SAFE_HOUSE, SiteName.YOUTH_SAFE_HOUSE.getConstituency(), SITE_URL, title, publishedDate);
 
                 noticeRepository.save(newNotice);
                 notificationService.sendNotification(newNotice);

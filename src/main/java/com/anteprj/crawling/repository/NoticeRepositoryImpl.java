@@ -1,5 +1,6 @@
 package com.anteprj.crawling.repository;
 
+import com.anteprj.entity.constant.Constituency;
 import com.anteprj.entity.constant.SiteName;
 import com.anteprj.notice.dto.NoticeRequest;
 import com.anteprj.notice.dto.NoticeResponse;
@@ -36,7 +37,8 @@ public class NoticeRepositoryImpl implements NoticeRepositoryCustom {
                 .from(notice)
                 .where(
                         searchFilter(request.searchType(), request.searchKeyword()),
-                        siteNameEq(request.siteName())
+                        siteNameEq(request.siteName()),
+                        constituencyEq(request.constituency())
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -51,7 +53,8 @@ public class NoticeRepositoryImpl implements NoticeRepositoryCustom {
                 .from(notice)
                 .where(
                         searchFilter(request.searchType(), request.searchKeyword()),
-                        siteNameEq(request.siteName())
+                        siteNameEq(request.siteName()),
+                        constituencyEq(request.constituency())
                 )
                 .fetchOne();
     }
@@ -68,5 +71,9 @@ public class NoticeRepositoryImpl implements NoticeRepositoryCustom {
 
     private BooleanExpression siteNameEq(SiteName siteName) {
         return siteName != null ? notice.siteName.eq(siteName) : null;
+    }
+
+    private BooleanExpression constituencyEq(Constituency constituency) {
+        return constituency != null ? notice.constituency.eq(constituency) : null;
     }
 }
