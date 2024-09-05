@@ -29,6 +29,7 @@ public class NoticeRepositoryImpl implements NoticeRepositoryCustom {
         List<NoticeResponse> adminResults = queryFactory.select(
                         new QNoticeResponse(
                                 notice.id,
+                                notice.constituency,
                                 notice.siteName,
                                 notice.siteUrl,
                                 notice.title,

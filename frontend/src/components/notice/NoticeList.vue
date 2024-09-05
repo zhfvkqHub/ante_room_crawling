@@ -1,13 +1,6 @@
 <template>
   <div>
     <div class="search-bar">
-      <input
-          v-model="searchKeyword"
-          @keyup.enter="fetchNotices"
-          type="text"
-          placeholder="제목 검색"
-          class="search-input"
-      />
       <select v-model="selectedSiteName" @change="fetchNotices" class="filter-select">
         <option value="">전체 사이트</option>
         <option v-for="site in siteOptions" :key="site.value" :value="site.value">
@@ -20,6 +13,13 @@
           {{ constituency.name }}
         </option>
       </select>
+      <input
+          v-model="searchKeyword"
+          @keyup.enter="fetchNotices"
+          type="text"
+          placeholder="제목 검색"
+          class="search-input"
+      />
       <button @click="fetchNotices" class="search-button">Search</button>
     </div>
 
@@ -31,19 +31,24 @@
       <thead>
       <tr>
         <th width="10%">번호</th>
+        <th width="15%">지역</th>
         <th width="15%">사이트명</th>
-        <th width="50%">제목</th>
-        <th width="15%">게시일</th>
-        <th width="10%">사이트</th>
+        <th width="40%">제목</th>
+        <th width="20%">게시일</th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(notice, index) in notices" :key="notice.id" :class="{'highlight-today': isToday(notice.publishedDate)}">
-        <td>{{ index + 1 + (currentPage - 1) * pageSize }}</td>
+      <tr
+          v-for="(notice, index) in notices"
+          :key="notice.id"
+          :class="{'highlight-today': isToday(notice.publishedDate)}"
+          @click="goToSite(notice.siteUrl)"
+          style="cursor: pointer;">
+      <td>{{ index + 1 + (currentPage - 1) * pageSize }}</td>
+        <td>{{ notice.constituency }}</td>
         <td>{{ notice.siteName }}</td>
         <td>{{ notice.title }}</td>
         <td>{{ notice.publishedDate }}</td>
-        <td><a :href="notice.siteUrl" target="_blank" class="notice-link">보기</a></td>
       </tr>
       </tbody>
     </table>
@@ -157,6 +162,11 @@ export default {
     formatCrawlingTime(time) {
       if (!time) return null;
       return format(new Date(time), 'yyyy년 MM월 dd일 HH:mm');
+    },
+    goToSite(siteUrl) {
+      if (siteUrl) {
+        window.open(siteUrl, '_blank');
+      }
     }
   }
 }
