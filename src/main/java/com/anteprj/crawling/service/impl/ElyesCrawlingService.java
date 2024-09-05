@@ -3,6 +3,7 @@ package com.anteprj.crawling.service.impl;
 import com.anteprj.crawling.repository.NoticeRepository;
 import com.anteprj.crawling.service.CrawlingService;
 import com.anteprj.entity.Notice;
+import com.anteprj.entity.constant.Constituency;
 import com.anteprj.entity.constant.SiteName;
 import com.anteprj.notice.service.NotificationService;
 import com.anteprj.util.JsoupUtils;
@@ -34,6 +35,11 @@ public class ElyesCrawlingService implements CrawlingService {
             Elements notices = doc.select(".lotte-tr-toggle tbody tr");
             for (Element noticeElement : notices) {
                 String title = noticeElement.select("td a").text();
+
+                String constituency = title.substring(title.indexOf("[") + 1, title.indexOf("]"));
+                Constituency bySiteName = SiteName.getConstituencyBySiteName(constituency);
+                bySiteName = bySiteName == null ? Constituency.ETC : bySiteName;
+
                 LocalDate publishedDate = LocalDate.parse(
                         noticeElement.select("td").get(2).text(),
                         DateTimeFormatter.ofPattern("yyyy.MM.dd")
@@ -43,7 +49,7 @@ public class ElyesCrawlingService implements CrawlingService {
                 // 해당 공지사항이 이미 존재하는지 확인
                 boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(link, title, publishedDate);
                 if (!exists) {
-                    Notice newNotice = Notice.create(SiteName.ELLICE, link, title, publishedDate);
+                    Notice newNotice = Notice.create(SiteName.ELLICE, bySiteName, link, title, publishedDate);
 
                     noticeRepository.save(newNotice);
                     notificationService.sendNotification(newNotice);

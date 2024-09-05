@@ -81,7 +81,7 @@ public class ModooCrawlingService implements CrawlingService {
 
             boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(siteUrl, title, publishedDate);
             if (!exists) {
-                Notice newNotice = Notice.create(siteName, siteUrl, title, publishedDate);
+                Notice newNotice = Notice.create(siteName, siteName.getConstituency(), siteUrl, title, publishedDate);
 
                 noticeRepository.save(newNotice);
                 notificationService.sendNotification(newNotice);

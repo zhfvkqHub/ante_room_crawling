@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mariadb://3.35.151.173:3306/crawling_db
+    url: jdbc:mariadb://ec2-3-38-252-93.ap-northeast-2.compute.amazonaws.com:3306/crawling_db
     username: root
     password: root
     driver-class-name: org.mariadb.jdbc.Driver

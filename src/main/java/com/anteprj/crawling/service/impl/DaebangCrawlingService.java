@@ -43,7 +43,7 @@ public class DaebangCrawlingService implements CrawlingService {
                 
                 boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
                 if (!exists) {
-                    Notice newNotice = Notice.create(SiteName.DONGJAK_GOLDEN_NOBLESS, SITE_URL, title, publishedDate);
+                    Notice newNotice = Notice.create(SiteName.DONGJAK_GOLDEN_NOBLESS, SiteName.DONGJAK_GOLDEN_NOBLESS.getConstituency(), SITE_URL, title, publishedDate);
 
                     noticeRepository.save(newNotice);
                     notificationService.sendNotification(newNotice);
