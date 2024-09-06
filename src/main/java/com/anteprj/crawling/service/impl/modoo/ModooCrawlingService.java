@@ -4,6 +4,7 @@ import com.anteprj.crawling.SiteInfo;
 import com.anteprj.crawling.repository.NoticeRepository;
 import com.anteprj.crawling.service.CrawlingService;
 import com.anteprj.entity.Notice;
+import com.anteprj.entity.constant.NotiType;
 import com.anteprj.entity.constant.SiteName;
 import com.anteprj.notice.service.NotificationService;
 import com.anteprj.util.WebDriverUtil;
@@ -70,6 +71,10 @@ public class ModooCrawlingService implements CrawlingService {
         Elements notices = doc.select(".table_type1 tbody tr");
         for (Element noticeElement : notices) {
             String title = noticeElement.select("td a").text();
+            if (title.contains("계약완료")) {
+                continue;
+            }
+
             String dateText = noticeElement.select("td").get(3).text();
 
             LocalDate publishedDate;
@@ -81,11 +86,28 @@ public class ModooCrawlingService implements CrawlingService {
 
             boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(siteUrl, title, publishedDate);
             if (!exists) {
-                Notice newNotice = Notice.create(siteName, siteName.getConstituency(), siteUrl, title, publishedDate);
+                Notice newNotice = Notice.create(
+                        siteName,
+                        siteName.getConstituency(),
+                        getNotiType(title),
+                        siteUrl,
+                        title,
+                        publishedDate
+                );
 
                 noticeRepository.save(newNotice);
                 notificationService.sendNotification(newNotice);
             }
+        }
+    }
+
+    private NotiType getNotiType(String title) {
+        if (title.contains("추첨 결과") || title.contains("발표") || title.contains("완료")) {
+            return NotiType.RESULT;
+        } else if (title.contains("모집") || title.contains("공실")) {
+            return NotiType.NOTICE;
+        } else {
+            return NotiType.ETC;
         }
     }
 }
