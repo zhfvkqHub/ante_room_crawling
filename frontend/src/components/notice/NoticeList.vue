@@ -13,6 +13,12 @@
           {{ constituency.name }}
         </option>
       </select>
+      <select v-model="selectedNoticeType" @change="fetchNotices" class="filter-select">
+        <option value="">전체 공지</option>
+        <option v-for="noticeType in noticeTypeOptions" :key="noticeType.value" :value="noticeType.value">
+          {{ noticeType.name }}
+        </option>
+      </select>
       <input
           v-model="searchKeyword"
           @keyup.enter="fetchNotices"
@@ -75,6 +81,7 @@ export default {
       searchKeyword: '',
       selectedSiteName: '',
       selectedConstituency: '',
+      selectedNoticeType: '',
       lastCrawledTime: '',
       siteOptions: [
         { name: "서초꽃마을주얼리", value: "SEOCHEO_FLOWER_VILLAGE_JEWELRY" },
@@ -116,6 +123,12 @@ export default {
         { name: "중구", value: "JUNG" },
         { name: "중랑구", value: "JUNGNANG" },
         { name: "기타", value: "ETC" }
+      ],
+      noticeTypeOptions: [
+        { name: "모집공고(마감포함)", value: "NOTICE" },
+        { name: "접수현황", value: "RECEIPT" },
+        { name: "당첨자발표", value: "RESULT" },
+        { name: "기타", value: "ETC" }
       ]
 
     }
@@ -131,6 +144,7 @@ export default {
         size: this.pageSize,
         siteName: this.selectedSiteName || null,
         constituency: this.selectedConstituency || null,
+        notiType: this.selectedNoticeType || null,
         searchType: 'TITLE',
         searchKeyword: this.searchKeyword || null
       };

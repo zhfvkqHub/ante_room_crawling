@@ -3,6 +3,7 @@ package com.anteprj.crawling.service.impl;
 import com.anteprj.crawling.repository.NoticeRepository;
 import com.anteprj.crawling.service.CrawlingService;
 import com.anteprj.entity.Notice;
+import com.anteprj.entity.constant.NotiType;
 import com.anteprj.entity.constant.SiteName;
 import com.anteprj.notice.service.NotificationService;
 import com.anteprj.util.WebDriverUtil;
@@ -56,7 +57,14 @@ public class SeoulCrawlingService implements CrawlingService {
 
             boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
             if (!exists) {
-                Notice newNotice = Notice.create(SiteName.YOUTH_SAFE_HOUSE, SiteName.YOUTH_SAFE_HOUSE.getConstituency(), SITE_URL, title, publishedDate);
+                Notice newNotice = Notice.create(
+                        SiteName.YOUTH_SAFE_HOUSE,
+                        SiteName.YOUTH_SAFE_HOUSE.getConstituency(),
+                        NotiType.NOTICE,
+                        SITE_URL,
+                        title,
+                        publishedDate
+                );
 
                 noticeRepository.save(newNotice);
                 notificationService.sendNotification(newNotice);

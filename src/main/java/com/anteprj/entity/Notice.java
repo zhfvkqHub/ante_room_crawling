@@ -1,6 +1,7 @@
 package com.anteprj.entity;
 
 import com.anteprj.entity.constant.Constituency;
+import com.anteprj.entity.constant.NotiType;
 import com.anteprj.entity.constant.SiteName;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,6 +37,10 @@ public class Notice {
     private Constituency constituency;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "noti_type", nullable = false)
+    private NotiType notiType;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "site_name", nullable = false)
     private SiteName siteName;
 
@@ -51,6 +56,7 @@ public class Notice {
     public static Notice create(
             SiteName siteName,
             Constituency constituency,
+            NotiType notiType,
             String siteUrl,
             String title,
             LocalDate publishedDate
@@ -58,6 +64,7 @@ public class Notice {
         return Notice.builder()
                 .siteName(siteName)
                 .constituency(constituency)
+                .notiType(notiType)
                 .siteUrl(siteUrl)
                 .title(title)
                 .publishedDate(publishedDate)

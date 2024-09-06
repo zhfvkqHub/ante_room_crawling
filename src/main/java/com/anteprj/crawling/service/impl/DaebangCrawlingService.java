@@ -3,6 +3,7 @@ package com.anteprj.crawling.service.impl;
 import com.anteprj.crawling.repository.NoticeRepository;
 import com.anteprj.crawling.service.CrawlingService;
 import com.anteprj.entity.Notice;
+import com.anteprj.entity.constant.NotiType;
 import com.anteprj.entity.constant.SiteName;
 import com.anteprj.notice.service.NotificationService;
 import com.anteprj.util.JsoupUtils;
@@ -34,21 +35,35 @@ public class DaebangCrawlingService implements CrawlingService {
             Elements notices = doc.select(".li_board .li_body");
             for (Element noticeElement : notices) {
                 String title = noticeElement.select(".list_text_title span").text();
-                if (!title.contains("모집")) {
-                    continue;
-                }
 
                 String dateText = noticeElement.select(".time").text();
                 LocalDate publishedDate = LocalDate.parse(dateText, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 
                 boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
                 if (!exists) {
-                    Notice newNotice = Notice.create(SiteName.DONGJAK_GOLDEN_NOBLESS, SiteName.DONGJAK_GOLDEN_NOBLESS.getConstituency(), SITE_URL, title, publishedDate);
+                    Notice newNotice = Notice.create(
+                            SiteName.DONGJAK_GOLDEN_NOBLESS, 
+                            SiteName.DONGJAK_GOLDEN_NOBLESS.getConstituency(), 
+                            getNotiType(title),
+                            SITE_URL, 
+                            title, 
+                            publishedDate
+                    );
 
                     noticeRepository.save(newNotice);
                     notificationService.sendNotification(newNotice);
                 }
             }
+        }
+    }
+
+    private NotiType getNotiType(String title) {
+        if (title.contains("발표")) {
+            return NotiType.RESULT;
+        } else if (title.contains("모집")) {
+            return NotiType.NOTICE;
+        } else {
+            return NotiType.ETC;
         }
     }
 }
