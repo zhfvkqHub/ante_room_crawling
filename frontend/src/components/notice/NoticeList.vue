@@ -30,7 +30,7 @@
     </div>
 
     <div class="last-crawled-time">
-      마지막 업데이트: {{ lastCrawledTime || '업데이트 중...' }}
+      마지막 업데이트: {{ lastCrawledTime || '진행 중...' }}
     </div>
 
     <table class="notice-table">
@@ -48,12 +48,17 @@
           v-for="(notice, index) in notices"
           :key="notice.id"
           :class="{'highlight-today': isToday(notice.publishedDate)}"
-          @click="goToSite(notice.siteUrl)"
-          style="cursor: pointer;">
+      >
       <td>{{ index + 1 + (currentPage - 1) * pageSize }}</td>
-        <td>{{ notice.siteName }}</td>
+        <td
+            @click="goToSite(notice.siteUrl)"
+            style="cursor: pointer;"
+        >{{ notice.siteName }}</td>
         <td>{{ notice.constituency }}</td>
-        <td>{{ notice.title }}</td>
+        <td
+            @click="goToSite(notice.siteUrl, notice.link)"
+            style="cursor: pointer;"
+        >{{ notice.title }}</td>
         <td>{{ notice.publishedDate }}</td>
       </tr>
       </tbody>
@@ -148,7 +153,11 @@ export default {
       if (!time) return null;
       return format(new Date(time), 'yyyy년 MM월 dd일 HH:mm');
     },
-    goToSite(siteUrl) {
+    goToSite(siteUrl, link) {
+      if (link) {
+        window.open(link, '_blank');
+      }
+
       if (siteUrl) {
         window.open(siteUrl, '_blank');
       }

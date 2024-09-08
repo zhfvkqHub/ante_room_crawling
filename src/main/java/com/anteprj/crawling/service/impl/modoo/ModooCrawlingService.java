@@ -86,11 +86,15 @@ public class ModooCrawlingService implements CrawlingService {
 
             boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(siteUrl, title, publishedDate);
             if (!exists) {
+                String dataMessageNo = noticeElement.attr("data-message-no");
+                String link = siteUrl + "&viewType=list&messageNo=" + dataMessageNo + "&mode=view";
+
                 Notice newNotice = Notice.create(
                         siteName,
                         siteName.getConstituency(),
                         getNotiType(title),
                         siteUrl,
+                        link,
                         title,
                         publishedDate
                 );

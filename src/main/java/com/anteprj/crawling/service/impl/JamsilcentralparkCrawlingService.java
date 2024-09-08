@@ -49,6 +49,7 @@ public class JamsilcentralparkCrawlingService implements CrawlingService {
                             SiteName.JAMSIL_CENTRAL_PARK.getConstituency(),
                             NotiType.NOTICE,
                             SITE_URL,
+                            null,
                             title,
                             publishedDate
                     );

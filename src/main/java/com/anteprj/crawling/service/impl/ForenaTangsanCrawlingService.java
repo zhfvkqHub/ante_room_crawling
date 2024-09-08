@@ -55,11 +55,13 @@ public class ForenaTangsanCrawlingService implements CrawlingService {
 
                         boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
                         if (!exists) {
+                            String link = noticeElement.select("td a").attr("href");
                             Notice newNotice = Notice.create(
                                     SiteName.FORENA_DANGSAN,
                                     SiteName.FORENA_DANGSAN.getConstituency(),
                                     NotiType.NOTICE,
                                     SITE_URL,
+                                    link,
                                     title,
                                     publishedDate
                             );

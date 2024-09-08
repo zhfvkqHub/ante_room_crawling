@@ -47,6 +47,9 @@ public class Notice {
     @Column(name = "site_url", nullable = false)
     private String siteUrl;
 
+    @Column(name = "link")
+    private String link;
+
     @Column(name = "title", nullable = false)
     private String title;
 
@@ -58,6 +61,7 @@ public class Notice {
             Constituency constituency,
             NotiType notiType,
             String siteUrl,
+            String link,
             String title,
             LocalDate publishedDate
     ) {
@@ -66,6 +70,7 @@ public class Notice {
                 .constituency(constituency)
                 .notiType(notiType)
                 .siteUrl(siteUrl)
+                .link(link)
                 .title(title)
                 .publishedDate(publishedDate)
                 .build();

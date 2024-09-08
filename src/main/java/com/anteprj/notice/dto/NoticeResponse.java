@@ -11,6 +11,7 @@ public record NoticeResponse(
         Constituency constituency,
         SiteName siteName,
         String siteUrl,
+        String link,
         String title,
         LocalDate publishedDate
 

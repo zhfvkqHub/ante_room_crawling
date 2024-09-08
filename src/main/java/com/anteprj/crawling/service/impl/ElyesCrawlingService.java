@@ -45,17 +45,18 @@ public class ElyesCrawlingService implements CrawlingService {
                         noticeElement.select("td").get(2).text(),
                         DateTimeFormatter.ofPattern("yyyy.MM.dd")
                 );
-                String link = "https://www.elyes.co.kr/info/notice.do";
+                String siteUrl = "https://www.elyes.co.kr/info/notice.do";
 
                 // 해당 공지사항이 이미 존재하는지 확인
-                boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(link, title, publishedDate);
+                boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(siteUrl, title, publishedDate);
                 if (!exists) {
                     Notice newNotice = Notice.create(
                             SiteName.ELLICE,
                             bySiteName, 
                             getNotiType(title),
-                            link, 
-                            title, 
+                            siteUrl,
+                            null,
+                            title,
                             publishedDate
                     );
 

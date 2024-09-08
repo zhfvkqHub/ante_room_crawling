@@ -14,6 +14,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -41,11 +42,14 @@ public class DaebangCrawlingService implements CrawlingService {
                 
                 boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
                 if (!exists) {
+                    String link = noticeElement.select("a").attr("href");
+                    if(StringUtils.hasText(link)) link = "https://www.db40314.kr" + link;
                     Notice newNotice = Notice.create(
                             SiteName.DONGJAK_GOLDEN_NOBLESS, 
                             SiteName.DONGJAK_GOLDEN_NOBLESS.getConstituency(), 
                             getNotiType(title),
-                            SITE_URL, 
+                            SITE_URL,
+                            link,
                             title, 
                             publishedDate
                     );
