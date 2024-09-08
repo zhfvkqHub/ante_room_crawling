@@ -37,7 +37,6 @@ export default {
   width: 100%;
   background-color: #1f577e;
   color: white;
-  padding: 15px 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
@@ -48,15 +47,16 @@ export default {
 .header-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 5px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .logo {
-  height: 40px;
+  height: 60px;
   margin-right: 20px;
+  border-radius: 35%;
 }
 
 .site-title {
