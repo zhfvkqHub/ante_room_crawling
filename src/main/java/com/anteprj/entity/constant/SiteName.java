@@ -1,6 +1,6 @@
 package com.anteprj.entity.constant;
 
-import com.anteprj.notice.dto.SiteDto;
+import com.anteprj.notice.dto.TypeDto;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
@@ -24,6 +24,9 @@ public enum SiteName {
     MHINITIUM("태릉입구역이니티움", Constituency.NOWON),
     GUSAN("구산역구산주택", Constituency.EUNPYEONG),
     LUCES_STATION("연신내역루체스테이션", Constituency.EUNPYEONG),
+    SANGBONG_YANG("상봉역상봉동양엔파트", Constituency.JUNGNANG),
+    SADANG_COVE("사당역코브", Constituency.DONGJAK),
+    SHINPOONG_VISTA("신풍역비스타동원", Constituency.GANGSEO),
 
 // ================== 엘리스 ==================
     ELLICE("엘리스", Constituency.ETC),
@@ -54,17 +57,38 @@ public enum SiteName {
 
     public static Constituency getConstituencyBySiteName(String siteName) {
         for (SiteName site : values()) {
-            if (site.siteName.equalsIgnoreCase(siteName)) {
+            if (siteName.contains(site.siteName)) {// 청년 안심 주택 사이트 때문에 포함으로 처리
                 return site.constituency;
             }
         }
         return null;
     }
 
-    public static List<SiteDto> getAllSites() {
+    public static List<TypeDto> getAllSites() {
+        List<SiteName> excludedSites = List.of(
+                // 엘리스
+                YONGSAN_WONHYO_ROO_MINI,
+                URBANIEL_CHUNGJEONG_RO,
+                URBANIEL_HANGANG,
+                URBANIEL_GASAN,
+                URBANIEL_YEOMCHANG,
+                URBANIEL_CHEONHO,
+                MULLAE_LOTTE_CASTLE,
+                DONGTAN_LOTTE_CASTLE,
+                SUJI_LOTTE_CASTLE,
+                DOKSAN_LOTTE_CASTLE,
+                HANGANG_LOTTE_CASTLE,
+                // 사이트X 청년 안심주택 (추가예정)
+                MHINITIUM, GUSAN, LUCES_STATION,
+                SANGBONG_YANG, SADANG_COVE, SHINPOONG_VISTA
+
+        );
+
         return List.of(SiteName.values())
                 .stream()
-                .map(site -> new SiteDto(site.getSiteName(), site.name()))
+                .filter(site -> !excludedSites.contains(site))
+                .map(site -> new TypeDto(site.getSiteName(), site.name()))
                 .toList();
     }
+
 }

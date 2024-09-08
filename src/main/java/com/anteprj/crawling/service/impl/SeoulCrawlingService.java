@@ -56,7 +56,7 @@ public class SeoulCrawlingService implements CrawlingService {
             String dateText = noticeElement.select("td").get(3).text();
             LocalDate publishedDate = LocalDate.parse(dateText, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-            String constituency = title.substring(title.indexOf("[") + 1, title.indexOf("]")).replace(" ", "");
+            String constituency = title.replace(" ", "");
             Constituency bySiteName = SiteName.getConstituencyBySiteName(constituency);
             bySiteName = bySiteName == null ? Constituency.ETC : bySiteName;
 

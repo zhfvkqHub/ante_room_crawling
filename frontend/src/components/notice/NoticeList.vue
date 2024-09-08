@@ -37,8 +37,8 @@
       <thead>
       <tr>
         <th width="10%">번호</th>
-        <th width="15%">지역</th>
         <th width="15%">사이트명</th>
+        <th width="15%">지역</th>
         <th width="40%">제목</th>
         <th width="20%">게시일</th>
       </tr>
@@ -51,8 +51,8 @@
           @click="goToSite(notice.siteUrl)"
           style="cursor: pointer;">
       <td>{{ index + 1 + (currentPage - 1) * pageSize }}</td>
-        <td>{{ notice.constituency }}</td>
         <td>{{ notice.siteName }}</td>
+        <td>{{ notice.constituency }}</td>
         <td>{{ notice.title }}</td>
         <td>{{ notice.publishedDate }}</td>
       </tr>
@@ -69,7 +69,7 @@
 
 <script>
 import {format} from 'date-fns';
-import {axiosGetLastCrawlingTime, axiosGetNotice} from '@/api';
+import {axiosGetConstituencies, axiosGetLastCrawlingTime, axiosGetNotice, axiosGetSites} from '@/api';
 
 export default {
   data() {
@@ -83,47 +83,8 @@ export default {
       selectedConstituency: '',
       selectedNoticeType: '',
       lastCrawledTime: '',
-      siteOptions: [
-        { name: "서초꽃마을주얼리", value: "SEOCHEO_FLOWER_VILLAGE_JEWELRY" },
-        { name: "제이스타상봉", value: "J_STAR_SANGBONG" },
-        { name: "BX201서울대", value: "BX201_SEOUL_NATIONAL_UNIVERSITY" },
-        { name: "동대문역사문화공원", value: "DONGDAEMUN_HISTORY_CULTURE_PARK" },
-        { name: "도림브라보", value: "DORIM_BRAVO" },
-        { name: "더클래식동작", value: "THE_CLASSIC_DONGJAK" },
-        { name: "신대방삼거리역골든노블레스", value: "DONGJAK_GOLDEN_NOBLESS" },
-        { name: "엘리스", value: "ELLICE" },
-        { name: "포레나당산", value: "FORENA_DANGSAN" },
-        { name: "잠실센트럴파크", value: "JAMSIL_CENTRAL_PARK" },
-        { name: "청년안심주택", value: "YOUTH_SAFE_HOUSE" }
-      ],
-      constituencyOptions: [
-        { name: "강남구", value: "GANGNAM" },
-        { name: "강동구", value: "GANGDONG" },
-        { name: "강북구", value: "GANGBUK" },
-        { name: "강서구", value: "GANGSEO" },
-        { name: "관악구", value: "GWANAK" },
-        { name: "광진구", value: "GWANGJIN" },
-        { name: "구로구", value: "GURO" },
-        { name: "금천구", value: "GEUMCHEON" },
-        { name: "노원구", value: "NOWON" },
-        { name: "도봉구", value: "DOBONG" },
-        { name: "동대문구", value: "DONGDAEMUN" },
-        { name: "동작구", value: "DONGJAK" },
-        { name: "마포구", value: "MAPO" },
-        { name: "서대문구", value: "SEODAEMUN" },
-        { name: "서초구", value: "SEOCHO" },
-        { name: "성동구", value: "SEONGDONG" },
-        { name: "성북구", value: "SEONGBUK" },
-        { name: "송파구", value: "SONGPA" },
-        { name: "양천구", value: "YANGCHEON" },
-        { name: "영등포구", value: "YEONGDEUNGPO" },
-        { name: "용산구", value: "YONGSAN" },
-        { name: "은평구", value: "EUNPYEONG" },
-        { name: "종로구", value: "JONGNO" },
-        { name: "중구", value: "JUNG" },
-        { name: "중랑구", value: "JUNGNANG" },
-        { name: "기타", value: "ETC" }
-      ],
+      siteOptions: [],
+      constituencyOptions: [],
       noticeTypeOptions: [
         { name: "모집공고(마감포함)", value: "NOTICE" },
         { name: "접수현황", value: "RECEIPT" },
@@ -136,6 +97,8 @@ export default {
   mounted() {
     this.fetchNotices();
     this.fetchLastCrawledTime();
+    this.fetchSiteOptions();
+    this.fetchConstituencyOptions();
   },
   methods: {
     async fetchNotices() {
@@ -156,6 +119,14 @@ export default {
     async fetchLastCrawledTime() {
       const response = await axiosGetLastCrawlingTime();
       this.lastCrawledTime = this.formatCrawlingTime(response.data.lastCrawlingTime);
+    },
+    async fetchSiteOptions() {
+      const response = await axiosGetSites();
+      this.siteOptions = response.data;
+    },
+    async fetchConstituencyOptions() {
+      const response = await axiosGetConstituencies();
+      this.constituencyOptions = response.data;
     },
     nextPage() {
       if (this.currentPage < this.totalPages) {
