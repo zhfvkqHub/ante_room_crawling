@@ -12,7 +12,7 @@ const router = createRouter({
             name: 'NoticeMain',
             component: () => import('@/views/NoticeMain.vue'),
             meta: {
-                title: '모집공고',
+                title: '청년안심주택 모집공고',
             }
         },
     ],
