@@ -33,6 +33,7 @@ public class NoticeRepositoryImpl implements NoticeRepositoryCustom {
                                 notice.constituency,
                                 notice.siteName,
                                 notice.siteUrl,
+                                notice.link,
                                 notice.title,
                                 notice.publishedDate
                         ))

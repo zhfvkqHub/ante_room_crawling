@@ -62,11 +62,13 @@ public class SeoulCrawlingService implements CrawlingService {
 
             boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
             if (!exists) {
+                String link = noticeElement.select("td a").attr("href");
                 Notice newNotice = Notice.create(
                         SiteName.YOUTH_SAFE_HOUSE,
                         bySiteName,
                         NotiType.NOTICE,
                         SITE_URL,
+                        link,
                         title,
                         publishedDate
                 );

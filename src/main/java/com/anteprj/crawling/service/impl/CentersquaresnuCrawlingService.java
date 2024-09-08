@@ -14,6 +14,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -38,7 +39,6 @@ public class CentersquaresnuCrawlingService implements CrawlingService {
 
             for (Element noticeElement : notices) {
                 String title = noticeElement.select(".tit a").text();
-
                 String htmlContent = noticeElement.html();
 
                 Pattern datePattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
@@ -63,11 +63,14 @@ public class CentersquaresnuCrawlingService implements CrawlingService {
 
                 boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
                 if (!exists) {
+                    String link = noticeElement.select(".tit a").attr("href");
+                    if (StringUtils.hasText(link)) link = "https://centersquaresnu.com" + link;
                     Notice newNotice = Notice.create(
-                            SiteName.DONGJAK_GOLDEN_NOBLESS,
-                            SiteName.DONGJAK_GOLDEN_NOBLESS.getConstituency(),
+                            SiteName.SEOUL_VENTURE_TOWN,
+                            SiteName.SEOUL_VENTURE_TOWN.getConstituency(),
                             getNotiType(title),
                             SITE_URL,
+                            link,
                             title,
                             publishedDate
                     );
