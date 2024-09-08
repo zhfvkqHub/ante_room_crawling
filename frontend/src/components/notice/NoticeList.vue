@@ -36,11 +36,11 @@
     <table class="notice-table">
       <thead>
       <tr>
-        <th width="10%">번호</th>
-        <th width="15%">사이트명</th>
+        <th width="8%">번호</th>
+        <th width="18%">사이트명</th>
         <th width="15%">지역</th>
-        <th width="40%">제목</th>
-        <th width="20%">게시일</th>
+        <th width="43%">제목</th>
+        <th width="17%">게시일</th>
       </tr>
       </thead>
       <tbody>
