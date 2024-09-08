@@ -2,8 +2,11 @@ package com.anteprj.notice.controller;
 
 import com.anteprj.crawling.repository.LastCrawlingTimeRepository;
 import com.anteprj.entity.LastCrawlingTime;
+import com.anteprj.entity.constant.Constituency;
+import com.anteprj.entity.constant.SiteName;
 import com.anteprj.notice.dto.NoticeRequest;
 import com.anteprj.notice.dto.NoticeResponse;
+import com.anteprj.notice.dto.TypeDto;
 import com.anteprj.notice.service.NoticeApiService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -38,5 +42,15 @@ public class NoticeApiController {
     public ResponseEntity<LastCrawlingTime> getLastCrawlingTime() {
         Optional<LastCrawlingTime> lastCrawlingTime = lastCrawlingTimeRepository.findTopByOrderByLastCrawlingTimeDesc();
         return ResponseEntity.ok(lastCrawlingTime.orElse(null));
+    }
+
+    @GetMapping("/sites")
+    public List<TypeDto> getSites() {
+        return SiteName.getAllSites();
+    }
+
+    @GetMapping("/constituencies")
+    public List<TypeDto> getConstituencies() {
+        return Constituency.getAllConstituencies();
     }
 }

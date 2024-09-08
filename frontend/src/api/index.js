@@ -29,3 +29,11 @@ export async function axiosGetNotice(params) {
 export const axiosGetLastCrawlingTime = () => {
     return instance.get('/notice/last-crawled-time');
 };
+
+export const axiosGetSites = () => {
+    return instance.get('/notice/sites');
+}
+
+export const axiosGetConstituencies = () => {
+    return instance.get('/notice/constituencies');
+}

@@ -1,7 +1,10 @@
 package com.anteprj.entity.constant;
 
+import com.anteprj.notice.dto.TypeDto;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
+
+import java.util.List;
 
 @AllArgsConstructor
 public enum Constituency {
@@ -42,5 +45,12 @@ public enum Constituency {
     @JsonValue
     public String getConstituency() {
         return constituency;
+    }
+
+    public static List<TypeDto> getAllConstituencies() {
+        return List.of(Constituency.values())
+                .stream()
+                .map(con -> new TypeDto(con.getConstituency(), con.name()))
+                .toList();
     }
 }
