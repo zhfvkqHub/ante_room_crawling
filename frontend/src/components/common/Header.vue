@@ -20,7 +20,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: '청년안심주택 모집공고'
+      default: '청년안심주택 모집공고 수집'
     },
     navItems: {
       type: Array,
@@ -60,8 +60,11 @@ export default {
 }
 
 .site-title {
+  font-family: "Hi Melody", sans-serif;
+  font-weight: 400;
+  font-style: normal;
   flex-grow: 1;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   text-align: left;
   color: #ECF0F1;
 }
