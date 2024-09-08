@@ -30,6 +30,9 @@ public enum Constituency {
     JONGNO("종로구"),
     JUNG("중구"),
     JUNGNANG("중랑구"),
+    HWASEONG("화성시"),
+    YONGIN("용인시"),
+    KIMPO("김포시"),
     ETC("기타")
 
     ;

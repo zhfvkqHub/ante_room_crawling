@@ -37,7 +37,7 @@ public class ElyesCrawlingService implements CrawlingService {
             for (Element noticeElement : notices) {
                 String title = noticeElement.select("td a").text();
 
-                String constituency = title.substring(title.indexOf("[") + 1, title.indexOf("]"));
+                String constituency = title.substring(title.indexOf("[") + 1, title.indexOf("]")).replace(" ", "");
                 Constituency bySiteName = SiteName.getConstituencyBySiteName(constituency);
                 bySiteName = bySiteName == null ? Constituency.ETC : bySiteName;
 
