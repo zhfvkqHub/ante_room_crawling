@@ -17,6 +17,7 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -63,6 +64,7 @@ public class SeoulCrawlingService implements CrawlingService {
             boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
             if (!exists) {
                 String link = noticeElement.select("td a").attr("href");
+                if(StringUtils.hasText(link)) link = "https://soco.seoul.go.kr/youth/bbs/BMSR00015/" + link;
                 Notice newNotice = Notice.create(
                         SiteName.YOUTH_SAFE_HOUSE,
                         bySiteName,
