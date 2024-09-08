@@ -3,6 +3,7 @@ package com.anteprj.crawling.service.impl;
 import com.anteprj.crawling.repository.NoticeRepository;
 import com.anteprj.crawling.service.CrawlingService;
 import com.anteprj.entity.Notice;
+import com.anteprj.entity.constant.Constituency;
 import com.anteprj.entity.constant.NotiType;
 import com.anteprj.entity.constant.SiteName;
 import com.anteprj.notice.service.NotificationService;
@@ -55,11 +56,15 @@ public class SeoulCrawlingService implements CrawlingService {
             String dateText = noticeElement.select("td").get(3).text();
             LocalDate publishedDate = LocalDate.parse(dateText, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
+            String constituency = title.substring(title.indexOf("[") + 1, title.indexOf("]")).replace(" ", "");
+            Constituency bySiteName = SiteName.getConstituencyBySiteName(constituency);
+            bySiteName = bySiteName == null ? Constituency.ETC : bySiteName;
+
             boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
             if (!exists) {
                 Notice newNotice = Notice.create(
                         SiteName.YOUTH_SAFE_HOUSE,
-                        SiteName.YOUTH_SAFE_HOUSE.getConstituency(),
+                        bySiteName,
                         NotiType.NOTICE,
                         SITE_URL,
                         title,
