@@ -22,19 +22,13 @@ export default {
 
 <style scoped>
 .container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0;
-  background-color: #ffffff;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Jua", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .main-content {
-  padding-top: 80px;
-  padding-bottom: 100px;
-  margin: 40px auto;
-  background-color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  padding-top: 100px;
+  padding-bottom: 50px;
 }
 </style>

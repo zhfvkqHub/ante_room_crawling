@@ -26,11 +26,11 @@
           placeholder="제목 검색"
           class="search-input"
       />
-      <button @click="fetchNotices" class="search-button">Search</button>
+      <button @click="fetchNotices" class="search-button">검색</button>
     </div>
 
     <div class="last-crawled-time">
-      마지막 업데이트 완료 시간: {{ lastCrawledTime || '불러오는 중...' }}
+      마지막 업데이트: {{ lastCrawledTime || '업데이트 중...' }}
     </div>
 
     <table class="notice-table">
@@ -247,44 +247,53 @@ export default {
 
 .search-bar {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+  gap: 10px;
+  margin-bottom: 40px;
+  margin-left: 10px;
+  margin-right: 10px;
+  flex-wrap: wrap;
+}
+
+.last-crawled-time {
+  display: flex;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  font-size: 1rem;
+  color: #333;
+  justify-content: flex-end;
+}
+
+.filter-select,
+.search-input,
+.search-button {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.filter-select,
+.search-input {
+  flex: 1;
+  min-width: 150px;
 }
 
 .search-input {
-  flex-grow: 1;
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.filter-select {
-  padding: 10px;
-  margin-left: 10px;
-  font-size: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  flex-grow: 2;
 }
 
 .search-button {
-  margin-left: 10px;
-  padding: 10px 15px;
-  font-size: 1rem;
+  flex-grow: 0;
   background-color: #2980B9;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
+  width: auto;
+  min-width: 80px;
 }
 
 .search-button:hover {
   background-color: #1A5276;
-}
-
-.last-crawled-time {
-  margin-bottom: 15px;
-  font-size: 1.2rem;
-  color: #333;
 }
 </style>
