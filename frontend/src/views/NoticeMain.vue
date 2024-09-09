@@ -4,17 +4,20 @@
     <main class="main-content">
       <NoticeList />
     </main>
+    <Footer />
   </div>
 </template>
 
 <script>
 import Header from '@/components/common/Header.vue';
+import Footer from '@/components/common/Footer.vue';
 import NoticeList from '@/components/notice/NoticeList.vue';
 
 export default {
   name: 'MainView',
   components: {
     Header,
+    Footer,
     NoticeList
   }
 }
