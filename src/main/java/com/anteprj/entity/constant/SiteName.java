@@ -41,7 +41,7 @@ public enum SiteName {
     SUJI_LOTTE_CASTLE("수지구청역롯데캐슬", Constituency.YONGIN),
     DOKSAN_LOTTE_CASTLE("독산역롯데캐슬", Constituency.GEUMCHEON),
     HANGANG_LOTTE_CASTLE("한강롯데캐슬", Constituency.KIMPO),
-
+    HADAN_LOTTE_CASTLE("하단롯데캐슬", Constituency.BUSAN),
     ;
 
     private final String siteName;
