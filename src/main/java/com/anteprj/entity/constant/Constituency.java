@@ -36,6 +36,7 @@ public enum Constituency {
     HWASEONG("화성시"),
     YONGIN("용인시"),
     KIMPO("김포시"),
+    BUSAN("부산"),
     ETC("기타")
 
     ;
