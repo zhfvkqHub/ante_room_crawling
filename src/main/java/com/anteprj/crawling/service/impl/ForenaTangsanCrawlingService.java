@@ -75,7 +75,6 @@ public class ForenaTangsanCrawlingService implements CrawlingService {
                             );
 
                             noticeRepository.save(newNotice);
-                            notificationService.sendNotification(newNotice);
                         }
                     }
                 }
