@@ -31,10 +31,10 @@ public enum SiteName {
 // ================== 엘리스 ==================
     ELLICE("엘리스", Constituency.ETC),
     YONGSAN_WONHYO_ROO_MINI("용산원효루미니", Constituency.YONGSAN),
-    URBANIEL_CHUNGJEONG_RO("어바니엘충정로", Constituency.EUNPYEONG),
-    URBANIEL_HANGANG("어바니엘한강", Constituency.YEONGDEUNGPO),
+    URBANIEL_CHUNGJEONG_RO("어바니엘충정로", Constituency.SEODAEMUN),
+    URBANIEL_HANGANG("어바니엘한강", Constituency.DONGJAK),
     URBANIEL_GASAN("어바니엘가산", Constituency.GEUMCHEON),
-    URBANIEL_YEOMCHANG("어바니엘염창", Constituency.GANGSEO),
+    URBANIEL_YEOMCHANG("어바니엘염창", Constituency.YANGCHEON),
     URBANIEL_CHEONHO("어바니엘천호", Constituency.GANGDONG),
     MULLAE_LOTTE_CASTLE("문래롯데캐슬", Constituency.YEONGDEUNGPO),
     DONGTAN_LOTTE_CASTLE("동탄롯데캐슬", Constituency.HWASEONG),
