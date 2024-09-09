@@ -100,7 +100,6 @@ public class ModooCrawlingService implements CrawlingService {
                 );
 
                 noticeRepository.save(newNotice);
-                notificationService.sendNotification(newNotice);
             }
         }
     }

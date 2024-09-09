@@ -76,7 +76,6 @@ public class CentersquaresnuCrawlingService implements CrawlingService {
                     );
 
                     noticeRepository.save(newNotice);
-                    notificationService.sendNotification(newNotice);
                 }
             }
         } else {

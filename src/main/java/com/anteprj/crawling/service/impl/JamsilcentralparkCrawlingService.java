@@ -55,7 +55,6 @@ public class JamsilcentralparkCrawlingService implements CrawlingService {
                     );
 
                     noticeRepository.save(newNotice);
-                    notificationService.sendNotification(newNotice);
                 }
             }
         }

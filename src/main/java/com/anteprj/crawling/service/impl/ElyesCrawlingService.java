@@ -61,14 +61,13 @@ public class ElyesCrawlingService implements CrawlingService {
                     );
 
                     noticeRepository.save(newNotice);
-                    notificationService.sendNotification(newNotice);
                 }
             }
         }
     }
 
     private NotiType getNotiType(String title) {
-        if (title.contains("접수현황")) {
+        if (title.contains("현황")) {
             return NotiType.RECEIPT;
         } else if (title.contains("모집공고") || title.contains("모집 공고")) {
             return NotiType.NOTICE;
