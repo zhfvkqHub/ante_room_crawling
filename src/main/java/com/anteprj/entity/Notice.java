@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
@@ -56,6 +57,9 @@ public class Notice {
     @Column(name = "published_date", nullable = false)
     private LocalDate publishedDate;
 
+    @Column(name = "created_date", nullable = false)
+    private LocalDateTime createdDate;
+
     public static Notice create(
             SiteName siteName,
             Constituency constituency,
@@ -73,6 +77,7 @@ public class Notice {
                 .link(link)
                 .title(title)
                 .publishedDate(publishedDate)
+                .createdDate(LocalDateTime.now())
                 .build();
     }
 }
