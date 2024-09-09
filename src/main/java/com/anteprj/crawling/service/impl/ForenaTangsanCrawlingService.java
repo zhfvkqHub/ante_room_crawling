@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.MonthDay;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @Slf4j
 @Service
@@ -50,8 +51,15 @@ public class ForenaTangsanCrawlingService implements CrawlingService {
                         }
 
                         String dateText = noticeElement.select("td").get(4).text();
-                        MonthDay monthDay = MonthDay.parse(dateText, DateTimeFormatter.ofPattern("MM-dd"));
-                        LocalDate publishedDate = monthDay.atYear(LocalDate.now().getYear());
+                        LocalDate publishedDate;
+                        try {
+                            MonthDay monthDay = MonthDay.parse(dateText, DateTimeFormatter.ofPattern("MM-dd"));
+                            publishedDate = monthDay.atYear(LocalDate.now().getYear());
+                        } catch (DateTimeParseException e) {
+                            // 당일 게시글의 경우 시간으로 표시되어 있음
+                            log.warn("Failed to parse date: {}", dateText);
+                            publishedDate = LocalDate.now();
+                        }
 
                         boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
                         if (!exists) {
