@@ -21,6 +21,9 @@ public enum SiteName {
     JAMSIL_CENTRAL_PARK("잠실센트럴파크", Constituency.SONGPA),
     HUIKYUNG_J_STAR_SKY_CITY("휘경제이스카이시티", Constituency.JUNGNANG),
     SEOUL_VENTURE_TOWN("서울대벤처타운역", Constituency.GWANAK),
+    ILAND_SINCHON("이랜드신촌", Constituency.MAPO),
+
+    // todo
     MHINITIUM("태릉입구역이니티움", Constituency.NOWON),
     GUSAN("구산역구산주택", Constituency.EUNPYEONG),
     LUCES_STATION("연신내역루체스테이션", Constituency.EUNPYEONG),
