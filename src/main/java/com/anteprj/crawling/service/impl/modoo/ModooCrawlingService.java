@@ -42,7 +42,8 @@ public class ModooCrawlingService implements CrawlingService {
             SiteInfo.of(SiteName.DONGDAEMUN_HISTORY_CULTURE_PARK, "https://166tower.modoo.at/?link=5j8b3kfn"),
             SiteInfo.of(SiteName.DORIM_BRAVO, "https://dorimbravo.modoo.at/?link=286i2ogk"),
             SiteInfo.of(SiteName.THE_CLASSIC_DONGJAK, "https://theclassic2030.modoo.at/?link=eez99qhu"),
-            SiteInfo.of(SiteName.HUIKYUNG_J_STAR_SKY_CITY, "https://hkjskycity.modoo.at/?link=f3scs7qg")
+            SiteInfo.of(SiteName.HUIKYUNG_J_STAR_SKY_CITY, "https://hkjskycity.modoo.at/?link=f3scs7qg"),
+            SiteInfo.of(SiteName.CENTER_SQUARE_DEUNGCHON, "https://centersquare.modoo.at/?link=bpjvg4uq")
     );
 
     @Override
