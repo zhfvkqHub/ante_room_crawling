@@ -22,6 +22,7 @@ public enum SiteName {
     HUIKYUNG_J_STAR_SKY_CITY("휘경제이스카이시티", Constituency.JUNGNANG),
     SEOUL_VENTURE_TOWN("서울대벤처타운역", Constituency.GWANAK),
     ILAND_SINCHON("이랜드신촌", Constituency.MAPO),
+    CENTER_SQUARE_DEUNGCHON("센터스퀘어등촌", Constituency.GANGSEO),
 
     // todo
     MHINITIUM("태릉입구역이니티움", Constituency.NOWON),
