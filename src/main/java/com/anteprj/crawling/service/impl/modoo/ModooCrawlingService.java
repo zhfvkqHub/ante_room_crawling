@@ -106,7 +106,7 @@ public class ModooCrawlingService implements CrawlingService {
     }
 
     private NotiType getNotiType(String title) {
-        if (title.contains("추첨 결과") || title.contains("발표") || title.contains("완료")) {
+        if (title.contains("추첨 결과") || title.contains("발표")) {
             return NotiType.RESULT;
         } else if (title.contains("모집") || title.contains("공실")) {
             return NotiType.NOTICE;
