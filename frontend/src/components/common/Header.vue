@@ -1,8 +1,10 @@
 <template>
   <header class="header">
     <div class="header-content">
-      <img src="@/assets/house.jpg" alt="Logo" class="logo" />
-      <h1 class="site-title">{{ title }}</h1>
+      <div class="left-section">
+        <img src="@/assets/house.jpg" alt="Logo" class="logo" />
+        <h1 class="site-title">{{ title }}</h1>
+      </div>
       <nav class="navigation">
         <ul>
           <li v-for="(item, index) in navItems" :key="index">
@@ -10,6 +12,24 @@
           </li>
         </ul>
       </nav>
+      <!-- 문의하기 버튼 -->
+      <button class="contact-button" @click="toggleContactForm">
+        문의하기
+      </button>
+    </div>
+
+    <!-- 문의 사항 입력 폼 -->
+    <div class="contact-form" v-if="isContactFormOpen">
+      <button class="close-button" @click="toggleContactForm">닫기</button>
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSekPNcYtEIuhzVtuDotw1_hf9FAemGBRLVSBMCyyl8SWbGVOw/viewform?embedded=true"
+              width="640"
+              height="650"
+              frameborder="0"
+              marginheight="0"
+              marginwidth="0"
+      >
+      로드 중…
+      </iframe>
     </div>
   </header>
 </template>
@@ -28,8 +48,18 @@ export default {
         // todo : navItems
       ]
     }
+  },
+  data() {
+    return {
+      isContactFormOpen: false,
+    };
+  },
+  methods: {
+    toggleContactForm() {
+      this.isContactFormOpen = !this.isContactFormOpen;
+    }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -53,6 +83,11 @@ export default {
   justify-content: space-between;
 }
 
+.left-section {
+  display: flex;
+  align-items: center;
+}
+
 .logo {
   height: 60px;
   margin-right: 20px;
@@ -63,7 +98,6 @@ export default {
   font-family: "Hi Melody", sans-serif;
   font-weight: 400;
   font-style: normal;
-  flex-grow: 1;
   font-size: 1.8rem;
   text-align: left;
   color: #ECF0F1;
@@ -90,5 +124,48 @@ export default {
 
 .navigation a:hover {
   color: #1ABC9C;
+}
+
+.contact-button {
+  background-color: #1abc9c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.contact-button:hover {
+  background-color: #16a085;
+}
+
+.contact-form {
+  position: fixed;
+  top: 10%;
+  right: 20px;
+  width: 670px;
+  height: 680px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  z-index: 2000;
+}
+
+.close-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.close-button:hover {
+  background-color: #c0392b;
 }
 </style>

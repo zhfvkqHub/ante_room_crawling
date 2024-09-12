@@ -2,7 +2,7 @@
   <footer class="footer">
     <div class="footer-content">
       <div class="footer-left">
-        <p>문의사항: <a href="mailto:hamoey@naver.com">hamoey@naver.com</a></p>
+<!--        <p>문의사항: <a href="mailto:hamoey@naver.com">hamoey@naver.com</a></p>-->
       </div>
       <div class="footer-right">
       <p>월-금 8:00~19:00 30분 간격으로 크롤링 됩니다.</p>
