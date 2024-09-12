@@ -3,24 +3,24 @@
     <Header />
 
     <!-- 카카오 애드센스 광고 영역 -->
-    <div class="ads-container">
-      <ins class="kakao_ad_area" style="display:none;"
-           data-ad-unit="DAN-vGxhtmQFpbiRdNfb"
-           data-ad-width="728"
-           data-ad-height="90"></ins>
-    </div>
+<!--    <div class="ads-container">-->
+<!--      <ins class="kakao_ad_area" style="display:none;"-->
+<!--           data-ad-unit="DAN-vGxhtmQFpbiRdNfb"-->
+<!--           data-ad-width="728"-->
+<!--           data-ad-height="90"></ins>-->
+<!--    </div>-->
 
     <main class="main-content">
       <NoticeList />
     </main>
 
     <!-- 카카오 애드센스 광고 영역 -->
-    <div class="ads-container-footer">
-      <ins class="kakao_ad_area" style="display:none;"
-           data-ad-unit="DAN-cSgq62orTBdhY5z6"
-           data-ad-width="320"
-           data-ad-height="50"></ins>
-    </div>
+<!--    <div class="ads-container-footer">-->
+<!--      <ins class="kakao_ad_area" style="display:none;"-->
+<!--           data-ad-unit="DAN-cSgq62orTBdhY5z6"-->
+<!--           data-ad-width="320"-->
+<!--           data-ad-height="50"></ins>-->
+<!--    </div>-->
 
     <Footer />
   </div>
@@ -49,7 +49,7 @@ export default {
 }
 
 .main-content {
-  padding-top: 20px;
+  padding-top: 100px;
   padding-bottom: 50px;
   max-width: 1080px;
   margin: 0 auto;
