@@ -69,7 +69,8 @@ public class ElyesCrawlingService implements CrawlingService {
     private NotiType getNotiType(String title) {
         if (title.contains("현황")) {
             return NotiType.RECEIPT;
-        } else if (title.contains("모집공고") || title.contains("모집 공고") || title.contains("계약신청 안내")) {
+        } else if (title.contains("모집공고") || title.contains("모집 공고") 
+                || title.contains("계약신청 안내") || title.contains("공실세대")) {
             return NotiType.NOTICE;
         } else {
             return NotiType.ETC;
