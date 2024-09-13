@@ -14,7 +14,7 @@
       </nav>
       <!-- 문의하기 버튼 -->
       <button class="contact-button" @click="toggleContactForm">
-        문의하기
+        문의
       </button>
     </div>
 
@@ -127,10 +127,10 @@ export default {
 }
 
 .contact-button {
-  background-color: #1abc9c;
+  background-color: #2980b9;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 10px;
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
@@ -138,7 +138,7 @@ export default {
 }
 
 .contact-button:hover {
-  background-color: #16a085;
+  background-color: #164564;
 }
 
 .contact-form {
@@ -155,17 +155,18 @@ export default {
 }
 
 .close-button {
-  background-color: #e74c3c;
-  color: white;
+  background-color: #0e8b34;
+  color: #fff;
   border: none;
-  padding: 5px 10px;
+  padding: 7px 12px;
   cursor: pointer;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  border-radius: 5px;
+  top: 11px;
+  right: 7px;
 }
 
 .close-button:hover {
-  background-color: #c0392b;
+  background-color: #0a5f24;
 }
 </style>
