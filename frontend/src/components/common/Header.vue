@@ -169,4 +169,50 @@ export default {
 .close-button:hover {
   background-color: #0a5f24;
 }
+
+@media (max-width: 768px) {
+  .contact-form {
+    top: 5%;
+    right: 5%;
+    width: 90%;
+    height: 80%;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  .contact-form iframe {
+    width: 100%;
+    height: calc(100% - 40px);
+  }
+
+  .close-button {
+    top: 10px;
+    right: 10px;
+  }
+
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logo {
+    height: 50px;
+  }
+
+  .site-title {
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .navigation ul {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .navigation li {
+    margin: 5px 0;
+  }
+}
+
 </style>
