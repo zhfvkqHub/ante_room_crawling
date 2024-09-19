@@ -12,10 +12,15 @@
           </li>
         </ul>
       </nav>
-      <!-- 문의하기 버튼 -->
-      <button class="contact-button" @click="toggleContactForm">
-        문의
-      </button>
+
+      <div class="button-container">
+        <button class="contact-button" @click="toggleContactForm">
+          문의
+        </button>
+        <button class="push-button" @click="requestPush">
+          푸시 요청
+        </button>
+      </div>
     </div>
 
     <!-- 문의 사항 입력 폼 -->
@@ -28,7 +33,7 @@
               marginheight="0"
               marginwidth="0"
       >
-      로드 중…
+        로드 중…
       </iframe>
     </div>
   </header>
@@ -36,6 +41,7 @@
 
 <script>
 import {requestForToken} from '@/firebase';
+import {openModal} from "@/api/common/modal";
 
 export default {
   name: 'AppHeader',
@@ -47,7 +53,7 @@ export default {
     navItems: {
       type: Array,
       default: () => [
-        { name: '푸시', method: 'requestPush' }
+        // Nav items here, if needed
       ]
     }
   },
@@ -60,23 +66,15 @@ export default {
     toggleContactForm() {
       this.isContactFormOpen = !this.isContactFormOpen;
     },
-    executeMethod(methodName) {
-      if (typeof this[methodName] === 'function') {
-        this[methodName]();
-      } else {
-        console.warn(`메서드 ${methodName}를 찾을 수 없습니다.`);
-      }
-    },
     requestPush() {
       requestForToken()
-        .then(token => {
-          console.log(token);
-          alert('푸시 요청 성공');
-        })
-        .catch(error => {
-          console.error(error);
-          alert('푸시 요청 실패');
-        });
+          .then(() => {
+            openModal('알림', '푸시 요청이 완료되었습니다.');
+          })
+          .catch(error => {
+            console.error(error);
+            openModal('오류', '푸시 요청 중 오류가 발생했습니다.');
+          });
     },
   },
 };
@@ -146,6 +144,27 @@ export default {
   color: #1ABC9C;
 }
 
+.button-container {
+  display: flex;
+  align-items: center;
+}
+
+.push-button {
+  background-color: #8e44ad;
+  color: white;
+  border: none;
+  padding: 10px 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 10px; /* 문의 버튼과의 간격 */
+}
+
+.push-button:hover {
+  background-color: #5e3370;
+}
+
 .contact-button {
   background-color: #2980b9;
   color: white;
@@ -155,7 +174,6 @@ export default {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-left: 20px;
 }
 
 .contact-button:hover {
@@ -234,5 +252,4 @@ export default {
     margin: 5px 0;
   }
 }
-
 </style>

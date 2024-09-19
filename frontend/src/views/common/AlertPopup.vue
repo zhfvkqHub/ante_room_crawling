@@ -9,11 +9,11 @@
       </div>
       <div class="btnArea">
         <button @click="confirmAction" type="button" class="basic orange full">
-          {{ $t('modalMessage.confirmButton') }}
+          확인
         </button>
 
         <button @click="cancelAction" class="basic grey" v-if="onCancel">
-          {{ $t('modalMessage.cancelButton') }}
+          취소
         </button>
       </div>
     </div>
