@@ -91,6 +91,9 @@ dependencies {
     implementation("org.seleniumhq.selenium:selenium-java:4.18.1")
     implementation("org.seleniumhq.selenium:selenium-chrome-driver:4.18.1")
 
+    // firebase
+    implementation("com.google.firebase:firebase-admin:9.1.1")
+
     //querydsl
     implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
     annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")

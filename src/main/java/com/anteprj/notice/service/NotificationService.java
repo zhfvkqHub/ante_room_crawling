@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class NotificationService {
 
-    public void sendNotification(Notice notice) {
-        // todo 이메일, SMS, Slack 등 알림 전송 로직 구현
-        log.info("New notice: {}", notice.getTitle());
+    public void sendFcmPush(Notice notice) {
+        // firebase web push notification
     }
 }

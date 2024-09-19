@@ -158,7 +158,6 @@ export default {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-right: 10px; /* 문의 버튼과의 간격 */
 }
 
 .push-button:hover {
@@ -174,6 +173,7 @@ export default {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-right: 10px;
 }
 
 .contact-button:hover {
