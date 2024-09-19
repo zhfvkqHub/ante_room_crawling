@@ -37,3 +37,17 @@ export const axiosGetSites = () => {
 export const axiosGetConstituencies = () => {
     return instance.get('/notice/constituencies');
 }
+
+
+// push
+
+export async function sendTokenToServer(token) {
+    try {
+        return instance.post('/push/token', {
+            token
+        });
+    } catch (error) {
+        const errorMessage = handleError(error);
+        openModal("ERROR", errorMessage);
+    }
+}

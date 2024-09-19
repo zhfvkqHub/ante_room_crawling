@@ -8,7 +8,7 @@
       <nav class="navigation">
         <ul>
           <li v-for="(item, index) in navItems" :key="index">
-            <a :href="item.link">{{ item.name }}</a>
+            <a @click="executeMethod(item.method)">{{ item.name }}</a>
           </li>
         </ul>
       </nav>
@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import {requestForToken} from '@/firebase';
+
 export default {
   name: 'AppHeader',
   props: {
@@ -45,7 +47,7 @@ export default {
     navItems: {
       type: Array,
       default: () => [
-        // todo : navItems
+        { name: '푸시', method: 'requestPush' }
       ]
     }
   },
@@ -57,8 +59,26 @@ export default {
   methods: {
     toggleContactForm() {
       this.isContactFormOpen = !this.isContactFormOpen;
-    }
-  }
+    },
+    executeMethod(methodName) {
+      if (typeof this[methodName] === 'function') {
+        this[methodName]();
+      } else {
+        console.warn(`메서드 ${methodName}를 찾을 수 없습니다.`);
+      }
+    },
+    requestPush() {
+      requestForToken()
+        .then(token => {
+          console.log(token);
+          alert('푸시 요청 성공');
+        })
+        .catch(error => {
+          console.error(error);
+          alert('푸시 요청 실패');
+        });
+    },
+  },
 };
 </script>
 
