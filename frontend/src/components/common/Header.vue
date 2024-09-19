@@ -135,6 +135,7 @@ export default {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-left: 20px;
 }
 
 .contact-button:hover {
@@ -191,8 +192,7 @@ export default {
   }
 
   .header-content {
-    flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
   }
 
   .logo {
