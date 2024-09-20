@@ -1,5 +1,6 @@
 package com.anteprj.push.service;
 
+import com.anteprj.entity.Notice;
 import com.anteprj.entity.Push;
 import com.anteprj.push.dto.RequestTokenDto;
 import com.anteprj.push.repository.PushRepository;
@@ -20,5 +21,12 @@ public class PushService {
                         push -> push.update(requestTokenDto.token()),
                         () -> pushRepository.save(Push.create(requestTokenDto.token()))
                 );
+    }
+
+    @Transactional
+    public void sendPush(Notice newNotice) {
+        pushRepository.findAll().forEach(push -> {
+            // send push
+        });
     }
 }

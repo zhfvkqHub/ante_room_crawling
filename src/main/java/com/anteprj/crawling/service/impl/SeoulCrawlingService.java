@@ -6,7 +6,7 @@ import com.anteprj.entity.Notice;
 import com.anteprj.entity.constant.Constituency;
 import com.anteprj.entity.constant.NotiType;
 import com.anteprj.entity.constant.SiteName;
-import com.anteprj.notice.service.NotificationService;
+import com.anteprj.push.service.PushService;
 import com.anteprj.util.WebDriverUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ import java.time.format.DateTimeFormatter;
 public class SeoulCrawlingService implements CrawlingService {
 
     private final NoticeRepository noticeRepository;
-    private final NotificationService notificationService;
+    private final PushService pushService;
     private final WebDriverUtil webDriverUtil;
     private static final String SITE_URL = "https://soco.seoul.go.kr/youth/bbs/BMSR00015/list.do?menuNo=400008";
 
@@ -76,8 +76,7 @@ public class SeoulCrawlingService implements CrawlingService {
                 );
 
                 noticeRepository.save(newNotice);
-                notificationService.sendFcmPush(newNotice);
-
+                pushService.sendPush(newNotice);
             }
         }
     }

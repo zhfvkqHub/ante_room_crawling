@@ -6,7 +6,6 @@ import com.anteprj.crawling.service.CrawlingService;
 import com.anteprj.entity.Notice;
 import com.anteprj.entity.constant.NotiType;
 import com.anteprj.entity.constant.SiteName;
-import com.anteprj.notice.service.NotificationService;
 import com.anteprj.util.WebDriverUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +31,6 @@ import java.util.List;
 public class ModooCrawlingService implements CrawlingService {
 
     private final NoticeRepository noticeRepository;
-    private final NotificationService notificationService;
     private final WebDriverUtil webDriverUtil;
 
     private static final List<SiteInfo> SITE_URLS = List.of(

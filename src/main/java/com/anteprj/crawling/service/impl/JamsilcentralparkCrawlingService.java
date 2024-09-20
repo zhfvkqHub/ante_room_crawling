@@ -5,7 +5,6 @@ import com.anteprj.crawling.service.CrawlingService;
 import com.anteprj.entity.Notice;
 import com.anteprj.entity.constant.NotiType;
 import com.anteprj.entity.constant.SiteName;
-import com.anteprj.notice.service.NotificationService;
 import com.anteprj.util.JsoupUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +23,6 @@ import java.time.format.DateTimeFormatter;
 public class JamsilcentralparkCrawlingService implements CrawlingService {
 
     private final NoticeRepository noticeRepository;
-    private final NotificationService notificationService;
     private static final String SITE_URL = "https://jamsilcentralpark.com/notice1/?q=YToyOntzOjEyOiJrZXl3b3JkX3R5cGUiO3M6MzoiYWxsIjtzOjQ6InBhZ2UiO2k6Mjt9&page=1";
 
     @Override
