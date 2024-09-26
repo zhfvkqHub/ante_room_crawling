@@ -5,6 +5,7 @@ import com.anteprj.crawling.service.CrawlingService;
 import com.anteprj.entity.Notice;
 import com.anteprj.entity.constant.NotiType;
 import com.anteprj.entity.constant.SiteName;
+import com.anteprj.push.service.PushService;
 import com.anteprj.util.JsoupUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ import java.time.format.DateTimeParseException;
 public class ForenaTangsanCrawlingService implements CrawlingService {
 
     private final NoticeRepository noticeRepository;
+    private final PushService pushService;
     private static final String SITE_URL = "https://www.xn--910b48b70glxklhy.com/notice.html";
 
     @Override
@@ -73,6 +75,7 @@ public class ForenaTangsanCrawlingService implements CrawlingService {
                             );
 
                             noticeRepository.save(newNotice);
+                            pushService.sendPush(newNotice.getSiteName().getSiteName(), title);
                         }
                     }
                 }

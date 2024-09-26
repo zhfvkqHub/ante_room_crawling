@@ -6,6 +6,7 @@ import com.anteprj.crawling.service.CrawlingService;
 import com.anteprj.entity.Notice;
 import com.anteprj.entity.constant.NotiType;
 import com.anteprj.entity.constant.SiteName;
+import com.anteprj.push.service.PushService;
 import com.anteprj.util.WebDriverUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,7 @@ public class ModooCrawlingService implements CrawlingService {
 
     private final NoticeRepository noticeRepository;
     private final WebDriverUtil webDriverUtil;
+    private final PushService pushService;
 
     private static final List<SiteInfo> SITE_URLS = List.of(
             SiteInfo.of(SiteName.SEOCHEO_FLOWER_VILLAGE_JEWELRY, "https://seocho1502.modoo.at/?link=8a7g4ml6"),
@@ -99,6 +101,7 @@ public class ModooCrawlingService implements CrawlingService {
                 );
 
                 noticeRepository.save(newNotice);
+                pushService.sendPush(newNotice.getSiteName().getSiteName(), title);
             }
         }
     }

@@ -76,7 +76,7 @@ public class SeoulCrawlingService implements CrawlingService {
                 );
 
                 noticeRepository.save(newNotice);
-                pushService.sendPush(newNotice);
+                pushService.sendPush(newNotice.getSiteName().getSiteName(), newNotice.getTitle());
             }
         }
     }

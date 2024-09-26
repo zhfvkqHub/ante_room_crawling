@@ -5,6 +5,7 @@ import com.anteprj.crawling.service.CrawlingService;
 import com.anteprj.entity.Notice;
 import com.anteprj.entity.constant.NotiType;
 import com.anteprj.entity.constant.SiteName;
+import com.anteprj.push.service.PushService;
 import com.anteprj.util.JsoupUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ import java.util.regex.Pattern;
 public class CentersquaresnuCrawlingService implements CrawlingService {
 
     private final NoticeRepository noticeRepository;
+    private final PushService pushService;
     private static final String SITE_URL = "https://centersquaresnu.com/sub/sub04_02.php";
 
     @Override
@@ -74,6 +76,7 @@ public class CentersquaresnuCrawlingService implements CrawlingService {
                     );
 
                     noticeRepository.save(newNotice);
+                    pushService.sendPush(newNotice.getSiteName().getSiteName(), title);
                 }
             }
         } else {
