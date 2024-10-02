@@ -23,12 +23,12 @@ public enum SiteName {
     SEOUL_VENTURE_TOWN("서울대벤처타운역", Constituency.GWANAK),
     ILAND_SINCHON("이랜드신촌", Constituency.MAPO),
     CENTER_SQUARE_DEUNGCHON("센터스퀘어등촌", Constituency.GANGSEO),
+    SANGBONG_YANG("상봉역상봉동양엔파트", Constituency.JUNGNANG),
 
     // todo
     MHINITIUM("태릉입구역이니티움", Constituency.NOWON),
     GUSAN("구산역구산주택", Constituency.EUNPYEONG),
     LUCES_STATION("연신내역루체스테이션", Constituency.EUNPYEONG),
-    SANGBONG_YANG("상봉역상봉동양엔파트", Constituency.JUNGNANG),
     SADANG_COVE("사당역코브", Constituency.DONGJAK),
     SHINPOONG_VISTA("신풍역비스타동원", Constituency.GANGSEO),
 
