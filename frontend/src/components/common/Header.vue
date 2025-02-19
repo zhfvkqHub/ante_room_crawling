@@ -17,7 +17,7 @@
         <button class="contact-button" @click="toggleContactForm">
           문의
         </button>
-        <button class="push-button" @click="requestPush">
+        <button class="push-button" @click="requestPush" hidden="hidden">
           푸시 요청
         </button>
       </div>

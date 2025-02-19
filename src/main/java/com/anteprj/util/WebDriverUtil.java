@@ -1,5 +1,6 @@
 package com.anteprj.util;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import jakarta.annotation.PostConstruct;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -19,6 +20,7 @@ public class WebDriverUtil {
     }
 
     public WebDriver getWebDriver() {
+        WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");  // 브라우저 창을 띄우지 않음
         options.addArguments("--disable-gpu");  // GPU 가속을 비활성화

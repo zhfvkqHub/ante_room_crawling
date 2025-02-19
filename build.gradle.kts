@@ -94,6 +94,9 @@ dependencies {
     // firebase
     implementation("com.google.firebase:firebase-admin:9.1.1")
 
+    // webdrivermanager
+    implementation("io.github.bonigarcia:webdrivermanager:5.9.2")
+
     //querydsl
     implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
     annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
