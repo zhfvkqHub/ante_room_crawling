@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.MonthDay;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -63,11 +62,12 @@ public class ForenaTangsanCrawlingService implements CrawlingService {
                     continue;
                 }
 
-                String dateText = noticeElement.select("td").get(4).text();
+                String dateText = noticeElement.select("td").get(4).text().trim();
                 LocalDate publishedDate;
                 try {
-                    MonthDay monthDay = MonthDay.parse(dateText, DateTimeFormatter.ofPattern("MM-dd"));
-                    publishedDate = monthDay.atYear(LocalDate.now().getYear());
+                    // "25-07-30 16:37" 형식 → 앞의 날짜 부분만 사용
+                    String datePart = dateText.split(" ")[0];
+                    publishedDate = LocalDate.parse(datePart, DateTimeFormatter.ofPattern("yy-MM-dd"));
                 } catch (DateTimeParseException e) {
                     log.warn("[ForenaTangsanCrawlingService] 날짜 파싱 실패: {}", dateText);
                     publishedDate = LocalDate.now();
