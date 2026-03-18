@@ -1,12 +1,7 @@
 <template>
   <footer class="footer">
     <div class="footer-content">
-      <div class="footer-left">
-<!--        <p>문의사항: <a href="mailto:hamoey@naver.com">hamoey@naver.com</a></p>-->
-      </div>
-      <div class="footer-right">
-      <p>월-금 8:00~19:00 30분 간격으로 크롤링 됩니다.</p>
-      </div>
+      <p>월-금 08:00~19:00 / 30분 간격 자동 크롤링</p>
     </div>
   </footer>
 </template>
@@ -21,34 +16,30 @@ export default {
 .footer {
   width: 100%;
   background-color: #1f577e;
-  color: white;
-  padding: 20px 0;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-  position: relative;
-  bottom: 0;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 0;
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.08);
 }
 
 .footer-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  text-align: center;
+  font-size: 0.85rem;
 }
 
-.footer-left, .footer-right {
-  font-size: 1rem;
+.footer-content p {
+  margin: 0;
 }
 
-.footer a {
-  color: #1ABC9C;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
+@media (max-width: 768px) {
+  .footer {
+    padding: 12px 0;
+  }
 
-.footer a:hover {
-  color: #ECF0F1;
+  .footer-content {
+    font-size: 0.8rem;
+  }
 }
 </style>

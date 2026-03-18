@@ -31,6 +31,7 @@ public class NoticeRepositoryImpl implements NoticeRepositoryCustom {
                         new QNoticeResponse(
                                 notice.id,
                                 notice.constituency,
+                                notice.notiType,
                                 notice.siteName,
                                 notice.siteUrl,
                                 notice.link,

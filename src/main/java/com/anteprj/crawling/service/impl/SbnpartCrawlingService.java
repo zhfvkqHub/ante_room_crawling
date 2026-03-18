@@ -31,23 +31,36 @@ public class SbnpartCrawlingService implements CrawlingService {
     @Transactional
     public void checkNewNotices() {
         Document doc = JsoupUtils.getDocument(SITE_URL);
-        if (doc != null) {
-            Elements notices = doc.select(".board-list-m ul li");
-            for (Element noticeElement : notices) {
-                String title = noticeElement.select(".tit a").text();
+        if (doc == null) {
+            log.warn("[SbnpartCrawlingService] 페이지 로드 실패");
+            return;
+        }
 
-                String dateText = noticeElement.select(".info .date").text();
+        Elements notices = doc.select(".board-list table tbody tr");
+        for (Element noticeElement : notices) {
+            try {
+                String title = noticeElement.select("td.subject a").attr("title");
+                if (title.isEmpty()) {
+                    title = noticeElement.select("td.subject a").text();
+                }
+                if (title.isEmpty()) continue;
+
+                String dateText = noticeElement.select("td").get(3).text().trim();
                 LocalDate publishedDate = LocalDate.parse(dateText, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
                 boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
                 if (!exists) {
-                    String link = noticeElement.select(".tit a").attr("href");
+                    String link = noticeElement.select("td.subject a").attr("href");
+                    if (link != null && !link.isEmpty() && !link.startsWith("http")) {
+                        link = "https://sbnpart.co.kr/" + link;
+                    }
+
                     Notice newNotice = Notice.create(
                             SiteName.SANGBONG_YANG,
                             SiteName.SANGBONG_YANG.getConstituency(),
                             getNotiType(title),
                             SITE_URL,
-                            "https://sbnpart.co.kr/"+link,
+                            link,
                             title,
                             publishedDate
                     );
@@ -55,6 +68,8 @@ public class SbnpartCrawlingService implements CrawlingService {
                     noticeRepository.save(newNotice);
                     pushService.sendPush(newNotice.getSiteName().getSiteName(), title);
                 }
+            } catch (Exception e) {
+                log.error("[SbnpartCrawlingService] 공고 파싱 실패: {}", e.getMessage());
             }
         }
     }

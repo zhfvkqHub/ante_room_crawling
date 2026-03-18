@@ -49,10 +49,19 @@ export default {
 }
 
 .main-content {
-  padding-top: 100px;
+  padding-top: 80px;
   padding-bottom: 50px;
   max-width: 1080px;
   margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: 60px;
+    padding-bottom: 40px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
 }
 
 .ads-container {

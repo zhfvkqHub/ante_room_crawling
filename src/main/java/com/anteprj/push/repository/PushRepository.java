@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface PushRepository extends JpaRepository<Push, Long> {
     Optional<Push> findByToken(String token);
 
+    void deleteByToken(String token);
+
     @Query("SELECT p.token FROM Push p")
     List<String> findAllToken();
 }

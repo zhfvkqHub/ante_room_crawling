@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="header-content">
-      <div class="left-section">
+      <div class="left-section" @click="goHome">
         <img src="@/assets/house.jpg" alt="Logo" class="logo" />
         <h1 class="site-title">{{ title }}</h1>
       </div>
@@ -17,32 +17,28 @@
         <button class="contact-button" @click="toggleContactForm">
           문의
         </button>
-        <button class="push-button" @click="requestPush" hidden="hidden">
-          푸시 요청
-        </button>
       </div>
     </div>
 
     <!-- 문의 사항 입력 폼 -->
-    <div class="contact-form" v-if="isContactFormOpen">
-      <button class="close-button" @click="toggleContactForm">닫기</button>
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSekPNcYtEIuhzVtuDotw1_hf9FAemGBRLVSBMCyyl8SWbGVOw/viewform?embedded=true"
-              width="640"
-              height="650"
-              frameborder="0"
-              marginheight="0"
-              marginwidth="0"
-      >
-        로드 중…
-      </iframe>
+    <div v-if="isContactFormOpen" class="contact-overlay" @click.self="toggleContactForm">
+      <div class="contact-form">
+        <button class="close-button" @click="toggleContactForm">닫기</button>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSekPNcYtEIuhzVtuDotw1_hf9FAemGBRLVSBMCyyl8SWbGVOw/viewform?embedded=true"
+                width="100%"
+                height="100%"
+                frameborder="0"
+                marginheight="0"
+                marginwidth="0"
+        >
+          로드 중…
+        </iframe>
+      </div>
     </div>
   </header>
 </template>
 
 <script>
-import {requestForToken} from '@/firebase';
-import {openModal} from "@/api/common/modal";
-
 export default {
   name: 'AppHeader',
   props: {
@@ -52,9 +48,7 @@ export default {
     },
     navItems: {
       type: Array,
-      default: () => [
-        // Nav items here, if needed
-      ]
+      default: () => []
     }
   },
   data() {
@@ -66,16 +60,9 @@ export default {
     toggleContactForm() {
       this.isContactFormOpen = !this.isContactFormOpen;
     },
-    requestPush() {
-      requestForToken()
-          .then(() => {
-            openModal('알림', '푸시 요청이 완료되었습니다.');
-          })
-          .catch(error => {
-            console.error(error);
-            openModal('오류', '푸시 요청 중 오류가 발생했습니다.');
-          });
-    },
+    goHome() {
+      window.location.reload();
+    }
   },
 };
 </script>
@@ -85,7 +72,7 @@ export default {
   width: 100%;
   background-color: #1f577e;
   color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   position: fixed;
   top: 0;
   left: 0;
@@ -95,7 +82,7 @@ export default {
 .header-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 5px 20px;
+  padding: 8px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -104,11 +91,12 @@ export default {
 .left-section {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .logo {
-  height: 60px;
-  margin-right: 20px;
+  height: 50px;
+  margin-right: 14px;
   border-radius: 35%;
 }
 
@@ -116,9 +104,10 @@ export default {
   font-family: "Hi Melody", sans-serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   text-align: left;
   color: #ECF0F1;
+  white-space: nowrap;
 }
 
 .navigation ul {
@@ -149,107 +138,94 @@ export default {
   align-items: center;
 }
 
-.push-button {
-  background-color: #8e44ad;
-  color: white;
-  border: none;
-  padding: 10px 10px;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.push-button:hover {
-  background-color: #5e3370;
-}
-
 .contact-button {
-  background-color: #2980b9;
+  background-color: rgba(255, 255, 255, 0.15);
   color: white;
-  border: none;
-  padding: 10px 10px;
-  border-radius: 5px;
-  font-size: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-right: 10px;
+  transition: background-color 0.2s;
 }
 
 .contact-button:hover {
-  background-color: #164564;
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.contact-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .contact-form {
-  position: fixed;
-  top: 10%;
-  right: 20px;
-  width: 670px;
+  position: relative;
+  width: 640px;
   height: 680px;
   background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   overflow: hidden;
-  z-index: 2000;
 }
 
 .close-button {
-  background-color: #0e8b34;
+  background-color: #e74c3c;
   color: #fff;
   border: none;
-  padding: 7px 12px;
+  padding: 6px 14px;
   cursor: pointer;
   position: absolute;
-  border-radius: 5px;
-  top: 11px;
-  right: 7px;
+  border-radius: 6px;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  font-size: 0.85rem;
+  transition: background-color 0.2s;
 }
 
 .close-button:hover {
-  background-color: #0a5f24;
+  background-color: #c0392b;
 }
 
 @media (max-width: 768px) {
-  .contact-form {
-    top: 5%;
-    right: 5%;
-    width: 90%;
-    height: 80%;
-    padding: 15px;
-    box-sizing: border-box;
-  }
-
-  .contact-form iframe {
-    width: 100%;
-    height: calc(100% - 40px);
-  }
-
-  .close-button {
-    top: 10px;
-    right: 10px;
-  }
-
   .header-content {
-    align-items: center;
+    padding: 6px 12px;
   }
 
   .logo {
-    height: 50px;
+    height: 36px;
+    margin-right: 8px;
   }
 
   .site-title {
-    font-size: 1.5rem;
-    text-align: center;
-    margin: 10px 0;
+    font-size: 1rem;
   }
 
-  .navigation ul {
-    flex-direction: column;
+  .contact-button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .contact-overlay {
+    align-items: flex-end;
+  }
+
+  .contact-form {
     width: 100%;
+    height: 85%;
+    border-radius: 16px 16px 0 0;
   }
 
-  .navigation li {
-    margin: 5px 0;
+  .navigation {
+    display: none;
   }
 }
 </style>

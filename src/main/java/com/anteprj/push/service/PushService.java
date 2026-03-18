@@ -4,14 +4,18 @@ import com.anteprj.entity.Push;
 import com.anteprj.push.dto.RequestTokenDto;
 import com.anteprj.push.repository.PushRepository;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.MessagingErrorCode;
 import com.google.firebase.messaging.Notification;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PushService {
@@ -42,10 +46,17 @@ public class PushService {
                     .build();
 
             try {
-                String response = firebaseMessaging.send(message);
-                System.out.println("Successfully sent message: " + response);
+                firebaseMessaging.send(message);
+            } catch (FirebaseMessagingException e) {
+                MessagingErrorCode errorCode = e.getMessagingErrorCode();
+                if (errorCode == MessagingErrorCode.UNREGISTERED || errorCode == MessagingErrorCode.INVALID_ARGUMENT) {
+                    log.warn("[FCM] 유효하지 않은 토큰 삭제: {}", token);
+                    pushRepository.deleteByToken(token);
+                } else {
+                    log.error("[FCM] 푸시 발송 실패 - 토큰: {}, 에러: {}", token, e.getMessage());
+                }
             } catch (Exception e) {
-                System.err.println("Error sending FCM message: " + e.getMessage());
+                log.error("[FCM] 푸시 발송 중 예외 - 토큰: {}, 에러: {}", token, e.getMessage());
             }
         }
     }

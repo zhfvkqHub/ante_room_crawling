@@ -33,52 +33,64 @@ public class ForenaTangsanCrawlingService implements CrawlingService {
     @Transactional
     public void checkNewNotices() {
         Document doc = JsoupUtils.getDocument(SITE_URL);
-        if (doc != null) {
-            Element iframe = doc.selectFirst("iframe#guest_ifr");
-            if (iframe != null) {
-                String iframeSrc = iframe.attr("src");
-                String fullIframeUrl = "https://www.xn--910b48b70glxklhy.com" + iframeSrc.replace("../", "/");
+        if (doc == null) {
+            log.warn("[ForenaTangsanCrawlingService] 페이지 로드 실패");
+            return;
+        }
 
-                Document iframeDoc = JsoupUtils.getDocument(fullIframeUrl);
-                if (iframeDoc != null) {
-                    Elements notices = iframeDoc.select(".tbl_head01 tbody tr");
-                    // 년도 정보가 없는 이유로 최근 3개의 공지만 확인
-                    for (int i = 0; i < 3; i++) {
-                        Element noticeElement = notices.get(i);
-                        String title = noticeElement.select("td a").text();
-                        if (!title.contains("모집")) {
-                            continue;
-                        }
+        Element iframe = doc.selectFirst("iframe#guest_ifr");
+        if (iframe == null) {
+            log.warn("[ForenaTangsanCrawlingService] iframe 요소를 찾을 수 없음");
+            return;
+        }
 
-                        String dateText = noticeElement.select("td").get(4).text();
-                        LocalDate publishedDate;
-                        try {
-                            MonthDay monthDay = MonthDay.parse(dateText, DateTimeFormatter.ofPattern("MM-dd"));
-                            publishedDate = monthDay.atYear(LocalDate.now().getYear());
-                        } catch (DateTimeParseException e) {
-                            // 당일 게시글의 경우 시간으로 표시되어 있음
-                            log.warn("Failed to parse date: {}", dateText);
-                            publishedDate = LocalDate.now();
-                        }
+        String iframeSrc = iframe.attr("src");
+        String fullIframeUrl = "https://www.xn--910b48b70glxklhy.com" + iframeSrc.replace("../", "/");
 
-                        boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
-                        if (!exists) {
-                            String link = noticeElement.select("td a").attr("href");
-                            Notice newNotice = Notice.create(
-                                    SiteName.FORENA_DANGSAN,
-                                    SiteName.FORENA_DANGSAN.getConstituency(),
-                                    NotiType.NOTICE,
-                                    SITE_URL,
-                                    link,
-                                    title,
-                                    publishedDate
-                            );
+        Document iframeDoc = JsoupUtils.getDocument(fullIframeUrl);
+        if (iframeDoc == null) {
+            log.warn("[ForenaTangsanCrawlingService] iframe 페이지 로드 실패");
+            return;
+        }
 
-                            noticeRepository.save(newNotice);
-                            pushService.sendPush(newNotice.getSiteName().getSiteName(), title);
-                        }
-                    }
+        Elements notices = iframeDoc.select(".tbl_head01 tbody tr");
+        int limit = Math.min(2, notices.size());
+        for (int i = 0; i < limit; i++) {
+            try {
+                Element noticeElement = notices.get(i);
+                String title = noticeElement.select("td a").text();
+                if (!title.contains("모집")) {
+                    continue;
                 }
+
+                String dateText = noticeElement.select("td").get(4).text();
+                LocalDate publishedDate;
+                try {
+                    MonthDay monthDay = MonthDay.parse(dateText, DateTimeFormatter.ofPattern("MM-dd"));
+                    publishedDate = monthDay.atYear(LocalDate.now().getYear());
+                } catch (DateTimeParseException e) {
+                    log.warn("[ForenaTangsanCrawlingService] 날짜 파싱 실패: {}", dateText);
+                    publishedDate = LocalDate.now();
+                }
+
+                boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
+                if (!exists) {
+                    String link = noticeElement.select("td a").attr("href");
+                    Notice newNotice = Notice.create(
+                            SiteName.FORENA_DANGSAN,
+                            SiteName.FORENA_DANGSAN.getConstituency(),
+                            NotiType.NOTICE,
+                            SITE_URL,
+                            link,
+                            title,
+                            publishedDate
+                    );
+
+                    noticeRepository.save(newNotice);
+                    pushService.sendPush(newNotice.getSiteName().getSiteName(), title);
+                }
+            } catch (Exception e) {
+                log.error("[ForenaTangsanCrawlingService] 공고 파싱 실패: {}", e.getMessage());
             }
         }
     }
