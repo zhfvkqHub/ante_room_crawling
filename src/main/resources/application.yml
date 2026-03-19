@@ -1,4 +1,7 @@
 spring:
+  config:
+    activate:
+      on-profile: default
   application:
     name: ante_room_crawling
   jackson:
@@ -28,6 +31,11 @@ logging:
 
 server:
   port: 8085
+  ssl:
+    enabled: true
+    key-store-type: PEM
+    certificate: /etc/letsencrypt/live/anteroom.org/fullchain.pem
+    certificate-private-key: /etc/letsencrypt/live/anteroom.org/privkey.pem
 
 webdriver:
   chrome:
