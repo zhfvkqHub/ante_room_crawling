@@ -8,6 +8,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+
 @Component
 public class WebDriverUtil {
 
@@ -30,6 +32,10 @@ public class WebDriverUtil {
         options.addArguments("--disable-software-rasterizer"); // 소프트웨어 래스터라이저 비활성화
         options.addArguments("--window-size=1920,1080");  // 가상 화면 크기 지정
 
-        return new ChromeDriver(options);
+        ChromeDriver driver = new ChromeDriver(options);
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(30));
+        return driver;
     }
 }

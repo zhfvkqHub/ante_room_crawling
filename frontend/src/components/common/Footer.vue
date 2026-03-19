@@ -1,7 +1,7 @@
 <template>
   <footer class="footer">
     <div class="footer-content">
-      <p>월-금 08:00~19:00 / 30분 간격 자동 크롤링</p>
+      <p>월-금 08:00~19:00 / 1시간 간격 자동 크롤링</p>
     </div>
   </footer>
 </template>

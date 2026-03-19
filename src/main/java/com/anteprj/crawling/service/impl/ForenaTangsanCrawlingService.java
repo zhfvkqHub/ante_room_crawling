@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 @Slf4j
 @Service
@@ -63,15 +62,7 @@ public class ForenaTangsanCrawlingService implements CrawlingService {
                 }
 
                 String dateText = noticeElement.select("td").get(4).text().trim();
-                LocalDate publishedDate;
-                try {
-                    // "25-07-30 16:37" 형식 → 앞의 날짜 부분만 사용
-                    String datePart = dateText.split(" ")[0];
-                    publishedDate = LocalDate.parse(datePart, DateTimeFormatter.ofPattern("yy-MM-dd"));
-                } catch (DateTimeParseException e) {
-                    log.warn("[ForenaTangsanCrawlingService] 날짜 파싱 실패: {}", dateText);
-                    publishedDate = LocalDate.now();
-                }
+                LocalDate publishedDate = parseDate(dateText);
 
                 boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
                 if (!exists) {
@@ -92,6 +83,27 @@ public class ForenaTangsanCrawlingService implements CrawlingService {
             } catch (Exception e) {
                 log.error("[ForenaTangsanCrawlingService] 공고 파싱 실패: {}", e.getMessage());
             }
+        }
+    }
+
+    private LocalDate parseDate(String dateText) {
+        if (dateText == null || dateText.isBlank()) return LocalDate.now();
+
+        String datePart = dateText.split(" ")[0].trim();
+
+        // "25-07-30" 형식 (yy-MM-dd)
+        try {
+            return LocalDate.parse(datePart, DateTimeFormatter.ofPattern("yy-MM-dd"));
+        } catch (Exception ignored) {}
+
+        // "07-30" 형식 (MM-dd) — 연도 없는 경우 현재 연도 붙이기
+        try {
+            return LocalDate.parse(
+                    LocalDate.now().getYear() + "-" + datePart,
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        } catch (Exception e) {
+            log.warn("[ForenaTangsanCrawlingService] 날짜 파싱 실패: {}", dateText);
+            return LocalDate.now();
         }
     }
 }

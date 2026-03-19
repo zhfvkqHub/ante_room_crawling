@@ -14,14 +14,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -42,16 +38,37 @@ public class ElyesCrawlingService implements CrawlingService {
         try {
             driver.get(SITE_URL);
 
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".board-list, .list-wrap, table, .post-list, ul.list")));
+            // 페이지 렌더링 대기 (React SPA)
+            Thread.sleep(3000);
 
             String pageSource = driver.getPageSource();
             Document doc = Jsoup.parse(pageSource);
+
+            // 게시글 목록 탐색 시도
+            Elements candidates = doc.select("table tbody tr, .board-list li, .list-wrap li, .post-list li, ul.list > li");
+            if (candidates.isEmpty()) {
+                // SPA 렌더링 후 구조 탐색 — 범용 셀렉터로 재시도
+                candidates = doc.select("div[class*=list] a, div[class*=board] a, div[class*=post] a, li a[href*=post]");
+            }
+            if (candidates.isEmpty()) {
+                log.warn("[ElyesCrawlingService] 공고 목록을 찾을 수 없음 - 현재 게시글 0건이거나 사이트 구조 변경");
+                return;
+            }
+
             processNotices(doc);
         } catch (Exception e) {
-            log.error("[ElyesCrawlingService] 크롤링 실패: {}", e.getMessage(), e);
+            log.error("[ElyesCrawlingService] 크롤링 실패: {}", e.getMessage());
         } finally {
-            driver.quit();
+            if (driver != null) {
+                try {
+                    driver.quit();
+                } catch (Exception e) {
+                    log.warn("[ElyesCrawlingService] driver 종료 실패, 강제 종료 시도");
+                    try {
+                        Runtime.getRuntime().exec("pkill -f chromedriver");
+                    } catch (Exception ignored) {}
+                }
+            }
         }
     }
 
