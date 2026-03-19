@@ -12,17 +12,31 @@ const firebaseConfig = {
     measurementId: process.env.VUE_APP_FIREBASE_MEASUREMENT_ID
 };
 
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+let messaging = null;
+
+if (firebaseConfig.projectId) {
+    try {
+        const app = initializeApp(firebaseConfig);
+        messaging = getMessaging(app);
+    } catch (e) {
+        console.warn('Firebase 초기화 실패:', e.message);
+    }
+} else {
+    console.warn('Firebase 설정이 없습니다. 푸시 알림이 비활성화됩니다.');
+}
 
 export const requestForToken = async () => {
+    if (!messaging) {
+        console.warn('Firebase가 초기화되지 않았습니다.');
+        return;
+    }
+
     try {
         const currentToken = await getToken(messaging, {
             vapidKey: process.env.VUE_APP_FIREBASE_VAPID_KEY,
         });
         if (currentToken) {
             await sendTokenToServer(currentToken);
-
         } else {
             console.log("토큰을 가져오지 못했습니다. 알림 권한을 허용하세요.");
         }
@@ -33,6 +47,8 @@ export const requestForToken = async () => {
 
 export const onMessageListener = () =>
     new Promise((resolve) => {
+        if (!messaging) return;
+
         onMessage(messaging, (payload) => {
             console.log('메시지 수신:', payload);
             resolve(payload);
