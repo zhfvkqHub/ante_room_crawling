@@ -32,10 +32,7 @@ logging:
 server:
   port: 8085
   ssl:
-    enabled: true
-    key-store-type: PEM
-    certificate: /etc/letsencrypt/live/anteroom.org/fullchain.pem
-    certificate-private-key: /etc/letsencrypt/live/anteroom.org/privkey.pem
+    enabled: false
 
 webdriver:
   chrome:
