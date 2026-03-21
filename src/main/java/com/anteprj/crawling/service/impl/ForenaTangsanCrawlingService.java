@@ -94,13 +94,23 @@ public class ForenaTangsanCrawlingService implements CrawlingService {
         // "25-07-30" 형식 (yy-MM-dd)
         try {
             return LocalDate.parse(datePart, DateTimeFormatter.ofPattern("yy-MM-dd"));
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+            log.warn("[ForenaTangsanCrawlingService] 'yy-MM-dd' 형식 날짜 파싱 실패: {}", dateText);
+        }
 
         // "07-30" 형식 (MM-dd) — 연도 없는 경우 현재 연도 붙이기
         try {
-            return LocalDate.parse(
-                    LocalDate.now().getYear() + "-" + datePart,
+            LocalDate today = LocalDate.now();
+            LocalDate parsedDate = LocalDate.parse(
+                    today.getYear() + "-" + datePart,
                     DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+            // 만약 파싱된 날짜가 오늘보다 미래라면, 작년 날짜로 간주
+            if (parsedDate.isAfter(today)) {
+                parsedDate = parsedDate.minusYears(1);
+            }
+
+            return parsedDate;
         } catch (Exception e) {
             log.warn("[ForenaTangsanCrawlingService] 날짜 파싱 실패: {}", dateText);
             return LocalDate.now();
