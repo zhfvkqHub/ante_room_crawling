@@ -144,7 +144,7 @@ export default {
       siteOptions: [],
       constituencyOptions: [],
       noticeTypeOptions: [
-        { name: "모집공고(마감포함)", value: "NOTICE" },
+        { name: "모집공고", value: "NOTICE" },
         { name: "접수현황", value: "RECEIPT" },
         { name: "당첨자발표", value: "RESULT" },
         { name: "기타", value: "ETC" }
@@ -240,11 +240,11 @@ export default {
     getNotiTypeLabel(notiType) {
       const labels = {
         'NOTICE': '모집',
-        'RECEIPT': '접수',
+        'RECEIPT': '현황',
         'RESULT': '발표',
         'ETC': '기타',
-        '모집공고(마감포함)': '모집',
-        '접수현황': '접수',
+        '모집공고': '모집',
+        '접수현황': '현황',
         '당첨자발표': '발표',
         '기타': '기타'
       };
@@ -256,7 +256,7 @@ export default {
         'RECEIPT': 'badge-receipt',
         'RESULT': 'badge-result',
         'ETC': 'badge-etc',
-        '모집공고(마감포함)': 'badge-notice',
+        '모집공고': 'badge-notice',
         '접수현황': 'badge-receipt',
         '당첨자발표': 'badge-result',
         '기타': 'badge-etc'

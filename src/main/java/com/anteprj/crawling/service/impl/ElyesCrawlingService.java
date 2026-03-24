@@ -30,6 +30,8 @@ public class ElyesCrawlingService implements CrawlingService {
     private final PushService pushService;
     private final WebDriverUtil webDriverUtil;
     private static final String SITE_URL = "https://www.elyes.co.kr/post/recruit";
+    private static final String NOTICE_SELECTOR = "ul#recruit-list.list-type-notice > li, ul.list-type-notice#recruit-list > li, #recruit-list > li";
+    private static final String BASE_URL = "https://www.elyes.co.kr";
 
     @Override
     @Transactional
@@ -44,20 +46,18 @@ public class ElyesCrawlingService implements CrawlingService {
             String pageSource = driver.getPageSource();
             Document doc = Jsoup.parse(pageSource);
 
-            // 게시글 목록 탐색 시도
-            Elements candidates = doc.select("table tbody tr, .board-list li, .list-wrap li, .post-list li, ul.list > li");
-            if (candidates.isEmpty()) {
-                // SPA 렌더링 후 구조 탐색 — 범용 셀렉터로 재시도
-                candidates = doc.select("div[class*=list] a, div[class*=board] a, div[class*=post] a, li a[href*=post]");
+            Elements notices = doc.select(NOTICE_SELECTOR);
+            if (notices.isEmpty()) {
+                notices = doc.select("li a[href*=/post/recruit/detail]").parents();
             }
-            if (candidates.isEmpty()) {
+            if (notices.isEmpty()) {
                 log.warn("[ElyesCrawlingService] 공고 목록을 찾을 수 없음 - 현재 게시글 0건이거나 사이트 구조 변경");
                 return;
             }
 
-            processNotices(doc);
+            processNotices(notices);
         } catch (Exception e) {
-            log.error("[ElyesCrawlingService] 크롤링 실패: {}", e.getMessage());
+            log.error("[ElyesCrawlingService] 크롤링 실패", e);
         } finally {
             if (driver != null) {
                 try {
@@ -72,22 +72,25 @@ public class ElyesCrawlingService implements CrawlingService {
         }
     }
 
-    private void processNotices(Document doc) {
-        // 리뉴얼된 사이트의 목록 구조 탐색
-        Elements notices = doc.select("table tbody tr, .board-list li, .list-wrap li, .post-list li, ul.list > li");
-
-        if (notices.isEmpty()) {
-            log.warn("[ElyesCrawlingService] 공고 목록을 찾을 수 없음 - 사이트 구조 변경 확인 필요");
-            return;
-        }
-
+    private void processNotices(Elements notices) {
         for (Element noticeElement : notices) {
             try {
-                String title = noticeElement.select("td a, a .title, a .tit, .subject a").text().trim();
-                if (title.isEmpty()) {
-                    title = noticeElement.text().trim();
+                Element linkElement = noticeElement.selectFirst("a[href*=/post/recruit/detail]");
+                if (linkElement == null) {
+                    continue;
                 }
-                if (title.isEmpty()) continue;
+
+                String title = "";
+                Element titleElement = linkElement.selectFirst(".list-title p, .list-title, p");
+                if (titleElement != null) {
+                    title = titleElement.text().trim();
+                }
+                if (title.isEmpty()) {
+                    title = linkElement.text().trim();
+                }
+                if (title.isEmpty()) {
+                    continue;
+                }
 
                 String constituency;
                 try {
@@ -107,9 +110,9 @@ public class ElyesCrawlingService implements CrawlingService {
 
                 boolean exists = noticeRepository.existsBySiteUrlAndTitleAndPublishedDate(SITE_URL, title, publishedDate);
                 if (!exists) {
-                    String link = noticeElement.select("a").attr("href");
+                    String link = linkElement.attr("href");
                     if (link != null && !link.isEmpty() && !link.startsWith("http")) {
-                        link = "https://www.elyes.co.kr" + link;
+                        link = BASE_URL + link;
                     }
 
                     Notice newNotice = Notice.create(
@@ -132,7 +135,8 @@ public class ElyesCrawlingService implements CrawlingService {
     }
 
     private LocalDate parseDateFromElement(Element element) {
-        String text = element.text();
+        Element dateElement = element.selectFirst(".date");
+        String text = dateElement != null ? dateElement.text() : element.text();
         DateTimeFormatter[] formatters = {
                 DateTimeFormatter.ofPattern("yyyy.MM.dd"),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd"),

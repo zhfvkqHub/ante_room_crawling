@@ -75,7 +75,7 @@ public class SbnpartCrawlingService implements CrawlingService {
     }
 
     private NotiType getNotiType(String title) {
-        if (title.contains("발표") || title.contains("결과")) {
+        if (title.contains("발표") || title.contains("결과") || title.contains("당첨자")) {
             return NotiType.RESULT;
         } else if (title.contains("모집") || title.contains("공고")) {
             return NotiType.NOTICE;

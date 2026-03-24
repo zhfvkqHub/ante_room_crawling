@@ -12,7 +12,7 @@ public enum SiteName {
     YOUTH_SAFE_HOUSE("청년안심주택", Constituency.ETC),
     SEOCHEO_FLOWER_VILLAGE_JEWELRY("서초꽃마을주얼리", Constituency.SEOCHO),
     J_STAR_SANGBONG("제이스타상봉", Constituency.JUNGNANG),
-    BX201_SEOUL_NATIONAL_UNIVERSITY("BX201서울대", Constituency.GWANAK),
+    BX201_SEOUL_NATIONAL_UNIVERSITY("BX201서울대", Constituency.GWANAK), // legacy alias
     DONGDAEMUN_HISTORY_CULTURE_PARK("동대문역사문화공원", Constituency.JONGNO),
     DORIM_BRAVO("도림브라보", Constituency.YANGCHEON),
     THE_CLASSIC_DONGJAK("더클래식동작", Constituency.DONGJAK),
@@ -42,6 +42,7 @@ public enum SiteName {
     LUCES_STATION("연신내역루체스테이션", Constituency.EUNPYEONG),
     SADANG_COVE("사당역코브", Constituency.DONGJAK),
     SHINPOONG_VISTA("신풍역비스타동원", Constituency.GANGSEO),
+    GAE_BONG_SAGEUM("개봉역세이지움개봉", Constituency.GANGSEO),
 
 // ================== 엘리스 ==================
     ELLICE("엘리스", Constituency.ETC),
@@ -71,12 +72,25 @@ public enum SiteName {
     }
 
     public static Constituency getConstituencyBySiteName(String siteName) {
+        if (siteName == null || siteName.isBlank()) {
+            return null;
+        }
+
+        if (isBx201Alias(siteName)) {
+            return SEOUL_NATIONAL_UNIVERSITY_BX201.constituency;
+        }
+
         for (SiteName site : values()) {
-            if (siteName.contains(site.siteName)) {// 청년 안심 주택 사이트 때문에 포함으로 처리
+            if (siteName.contains(site.siteName) || siteName.equals(site.name())) {
                 return site.constituency;
             }
         }
         return null;
+    }
+
+    private static boolean isBx201Alias(String siteName) {
+        return siteName.contains(BX201_SEOUL_NATIONAL_UNIVERSITY.siteName)
+                || siteName.contains(SEOUL_NATIONAL_UNIVERSITY_BX201.siteName);
     }
 
     public static List<TypeDto> getAllSites() {
@@ -95,8 +109,9 @@ public enum SiteName {
                 HANGANG_LOTTE_CASTLE,
                 // 사이트X 청년 안심주택 (추가예정)
                 MHINITIUM, GUSAN, LUCES_STATION,
-                SANGBONG_YANG, SADANG_COVE, SHINPOONG_VISTA
-
+                SANGBONG_YANG, SADANG_COVE, SHINPOONG_VISTA,
+                // BX201 legacy alias
+                BX201_SEOUL_NATIONAL_UNIVERSITY
         );
 
         return List.of(SiteName.values())
