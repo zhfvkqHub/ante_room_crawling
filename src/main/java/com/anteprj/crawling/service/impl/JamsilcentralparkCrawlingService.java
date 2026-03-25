@@ -51,16 +51,7 @@ public class JamsilcentralparkCrawlingService implements CrawlingService {
         } catch (Exception e) {
             log.error("[JamsilcentralparkCrawlingService] 크롤링 실패: {}", e.getMessage());
         } finally {
-            if (driver != null) {
-                try {
-                    driver.quit();
-                } catch (Exception e) {
-                    log.warn("[JamsilcentralparkCrawlingService] driver 종료 실패, 강제 종료 시도");
-                    try {
-                        Runtime.getRuntime().exec("pkill -f chromedriver");
-                    } catch (Exception ignored) {}
-                }
-            }
+            webDriverUtil.quitSafely(driver);
         }
     }
 

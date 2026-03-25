@@ -52,7 +52,7 @@ public class DaebangCrawlingService implements CrawlingService {
         } catch (Exception e) {
             log.error("[DaebangCrawlingService] 크롤링 실패: {}", e.getMessage());
         } finally {
-            driver.quit();
+            webDriverUtil.quitSafely(driver);
         }
     }
 

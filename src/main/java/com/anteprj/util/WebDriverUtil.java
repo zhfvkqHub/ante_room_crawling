@@ -2,6 +2,7 @@ package com.anteprj.util;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Component
 public class WebDriverUtil {
 
@@ -19,23 +22,56 @@ public class WebDriverUtil {
     @PostConstruct
     public void init() {
         System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+        WebDriverManager.chromedriver().setup();
     }
 
     public WebDriver getWebDriver() {
-        WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");  // 브라우저 창을 띄우지 않음
-        options.addArguments("--disable-gpu");  // GPU 가속을 비활성화
-        options.addArguments("--no-sandbox");  // 리눅스 환경에서 필요한 옵션
-        options.addArguments("--disable-dev-shm-usage");  // 리눅스 환경에서 필요한 옵션
-        options.addArguments("--remote-allow-origins=*");  // 원격 디버깅 허용
-        options.addArguments("--disable-software-rasterizer"); // 소프트웨어 래스터라이저 비활성화
-        options.addArguments("--window-size=1920,1080");  // 가상 화면 크기 지정
+        options.addArguments("--headless");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--remote-allow-origins=*");
+        options.addArguments("--disable-software-rasterizer");
+        options.addArguments("--window-size=800,600");
+        options.addArguments("--disable-extensions");
+        options.addArguments("--disable-translate");
+        options.addArguments("--disable-background-networking");
+        options.addArguments("--disable-default-apps");
+        options.addArguments("--blink-settings=imagesEnabled=false");
+        options.addArguments("--js-flags=--max-old-space-size=128");
 
         ChromeDriver driver = new ChromeDriver(options);
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(30));
         return driver;
+    }
+
+    public void quitSafely(WebDriver driver) {
+        if (driver == null) return;
+        try {
+            driver.quit();
+        } catch (Exception e) {
+            log.warn("[WebDriverUtil] driver.quit() 실패, 강제 종료 시도");
+            forceKillChromeProcesses();
+        }
+    }
+
+    private void forceKillChromeProcesses() {
+        killProcess("chromedriver");
+        killProcess("chrome");
+    }
+
+    private void killProcess(String processName) {
+        try {
+            Process process = new ProcessBuilder("pkill", "-f", processName).start();
+            boolean finished = process.waitFor(5, TimeUnit.SECONDS);
+            if (!finished) {
+                process.destroyForcibly();
+            }
+        } catch (Exception e) {
+            log.warn("[WebDriverUtil] {} 프로세스 강제 종료 실패: {}", processName, e.getMessage());
+        }
     }
 }

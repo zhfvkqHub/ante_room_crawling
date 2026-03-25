@@ -59,16 +59,7 @@ public class ElyesCrawlingService implements CrawlingService {
         } catch (Exception e) {
             log.error("[ElyesCrawlingService] 크롤링 실패", e);
         } finally {
-            if (driver != null) {
-                try {
-                    driver.quit();
-                } catch (Exception e) {
-                    log.warn("[ElyesCrawlingService] driver 종료 실패, 강제 종료 시도");
-                    try {
-                        Runtime.getRuntime().exec("pkill -f chromedriver");
-                    } catch (Exception ignored) {}
-                }
-            }
+            webDriverUtil.quitSafely(driver);
         }
     }
 

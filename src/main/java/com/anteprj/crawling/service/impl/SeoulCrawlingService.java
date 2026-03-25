@@ -46,7 +46,7 @@ public class SeoulCrawlingService implements CrawlingService {
         } catch (Exception e) {
             log.error("Error occurred during crawling", e);
         } finally {
-            driver.quit();
+            webDriverUtil.quitSafely(driver);
         }
     }
 
