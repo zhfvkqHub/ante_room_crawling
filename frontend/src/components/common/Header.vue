@@ -2,7 +2,14 @@
   <header class="header">
     <div class="header-content">
       <div class="left-section" @click="goHome">
-        <img src="@/assets/house.jpg" alt="Logo" class="logo" />
+        <div class="logo-wrapper" @mouseenter="showViewCount" @mouseleave="hideViewCount">
+          <img src="@/assets/house.jpg" alt="Logo" class="logo" />
+          <transition name="fade">
+            <div v-if="isViewCountVisible" class="view-count-tooltip">
+              {{ todayViews !== null ? `${todayViews.toLocaleString()}` : '...' }}
+            </div>
+          </transition>
+        </div>
         <h1 class="site-title">{{ title }}</h1>
       </div>
       <nav class="navigation">
@@ -39,6 +46,8 @@
 </template>
 
 <script>
+import {axiosGetTodayViews, axiosPostPageView} from '@/api';
+
 export default {
   name: 'AppHeader',
   props: {
@@ -54,7 +63,12 @@ export default {
   data() {
     return {
       isContactFormOpen: false,
+      isViewCountVisible: false,
+      todayViews: null,
     };
+  },
+  mounted() {
+    axiosPostPageView().catch(() => {});
   },
   methods: {
     toggleContactForm() {
@@ -62,6 +76,18 @@ export default {
     },
     goHome() {
       window.location.reload();
+    },
+    async showViewCount() {
+      this.isViewCountVisible = true;
+      try {
+        const response = await axiosGetTodayViews();
+        this.todayViews = response.data;
+      } catch {
+        this.todayViews = null;
+      }
+    },
+    hideViewCount() {
+      this.isViewCountVisible = false;
     }
   },
 };
@@ -94,10 +120,53 @@ export default {
   cursor: pointer;
 }
 
+.logo-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: 14px;
+}
+
 .logo {
   height: 50px;
-  margin-right: 14px;
   border-radius: 35%;
+}
+
+.view-count-tooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: #ffd700;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1001;
+  letter-spacing: 0.5px;
+}
+
+.view-count-tooltip::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-bottom-color: rgba(0, 0, 0, 0.8);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 .site-title {
@@ -200,9 +269,12 @@ export default {
     padding: 6px 12px;
   }
 
+  .logo-wrapper {
+    margin-right: 8px;
+  }
+
   .logo {
     height: 36px;
-    margin-right: 8px;
   }
 
   .site-title {

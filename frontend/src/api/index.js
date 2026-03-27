@@ -38,6 +38,13 @@ export const axiosGetConstituencies = () => {
     return instance.get('/notice/constituencies');
 }
 
+export const axiosPostPageView = () => {
+    return instance.post('/notice/page-view');
+}
+
+export const axiosGetTodayViews = () => {
+    return instance.get('/notice/today-views');
+}
 
 // push
 

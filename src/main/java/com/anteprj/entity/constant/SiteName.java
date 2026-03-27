@@ -43,6 +43,7 @@ public enum SiteName {
     SADANG_COVE("사당역코브", Constituency.DONGJAK),
     SHINPOONG_VISTA("신풍역비스타동원", Constituency.GANGSEO),
     GAE_BONG_SAGEUM("개봉역세이지움개봉", Constituency.GANGSEO),
+    NORYANGJIN_SUMMIT_TOWER("노량진역더써밋타워", Constituency.DONGJAK),
 
 // ================== 엘리스 ==================
     ELLICE("엘리스", Constituency.ETC),

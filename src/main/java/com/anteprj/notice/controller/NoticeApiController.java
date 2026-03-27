@@ -8,6 +8,7 @@ import com.anteprj.notice.dto.NoticeRequest;
 import com.anteprj.notice.dto.NoticeResponse;
 import com.anteprj.notice.dto.TypeDto;
 import com.anteprj.notice.service.NoticeApiService;
+import com.anteprj.notice.service.PageViewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +31,7 @@ public class NoticeApiController {
 
     private final NoticeApiService noticeService;
     private final LastCrawlingTimeRepository lastCrawlingTimeRepository;
+    private final PageViewService pageViewService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -52,5 +55,16 @@ public class NoticeApiController {
     @GetMapping("/constituencies")
     public List<TypeDto> getConstituencies() {
         return Constituency.getAllConstituencies();
+    }
+
+    @PostMapping("/page-view")
+    @ResponseStatus(HttpStatus.OK)
+    public long recordPageView() {
+        return pageViewService.recordAndGet();
+    }
+
+    @GetMapping("/today-views")
+    public long getTodayViews() {
+        return pageViewService.getTodayViews();
     }
 }
